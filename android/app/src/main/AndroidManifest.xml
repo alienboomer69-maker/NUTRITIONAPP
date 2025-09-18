@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.nuts">
 
     <!-- Internet permission (Firebase, APIs, Nutrition API, etc.) -->
@@ -13,6 +14,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <!-- 🔔 Notifications + Alarms -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Android 13+ -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" /> <!-- Android 12+ exact alarms -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- Keep CPU running for alarms -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"
+        tools:ignore="ProtectedPermissions" /> <!-- Android 12+ -->
 
     <application
         android:name=".MainApplication"

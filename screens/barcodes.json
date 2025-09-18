@@ -1,0 +1,893 @@
+[
+  {
+    "code": "3017620425035",
+    "name": "Nutella",
+    "calories": 539,
+    "protein": 6.3,
+    "carbs": 57.5,
+    "fats": 30.9,
+    "image": "https://images.openfoodfacts.org/images/products/301/762/042/5035/front_en.583.400.jpg"
+  },
+  {
+    "code": "3017620422003",
+    "name": "Nutella",
+    "calories": 539,
+    "protein": 6.3,
+    "carbs": 57.5,
+    "fats": 30.9,
+    "image": "https://images.openfoodfacts.org/images/products/301/762/042/2003/front_en.633.400.jpg"
+  },
+  {
+    "code": "90162602",
+    "name": "Redbull",
+    "calories": 46,
+    "protein": 0,
+    "carbs": 11,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/000/009/016/2602/front_en.120.400.jpg"
+  },
+  {
+    "code": "8902080000227",
+    "name": "Sting Energy",
+    "calories": 28,
+    "protein": 0,
+    "carbs": 7,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/208/000/0227/front_en.71.400.jpg"
+  },
+  {
+    "code": "5999884034469",
+    "name": "HELL",
+    "calories": 46,
+    "protein": 0,
+    "carbs": 11,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/599/988/403/4469/front_en.61.400.jpg"
+  },
+  {
+    "code": "54491496",
+    "name": "diet coke 500ml",
+    "calories": 0.4,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/000/005/449/1496/front_en.73.400.jpg"
+  },
+  {
+    "code": "8901058000290",
+    "name": "maggi",
+    "calories": 384,
+    "protein": 8.14,
+    "carbs": 59.6,
+    "fats": 12.6,
+    "image": "https://images.openfoodfacts.org/images/products/890/105/800/0290/front_en.26.400.jpg"
+  },
+  {
+    "code": "0074305001161",
+    "name": "Apple Cider Vinegar",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/007/430/500/1161/front_en.38.400.jpg"
+  },
+  {
+    "code": "8901088000451",
+    "name": "Parachnute 100% Pure Coconut Oil",
+    "calories": 900,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 100,
+    "image": "https://images.openfoodfacts.org/images/products/890/108/800/0451/front_en.18.400.jpg"
+  },
+  {
+    "code": "8901491100519",
+    "name": "Kurkure",
+    "calories": 552,
+    "protein": 6,
+    "carbs": 56.4,
+    "fats": 33.6,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/110/0519/front_en.48.400.jpg"
+  },
+  {
+    "code": "09141209",
+    "name": "Bourn Vita 500Gram Pauch",
+    "calories": 284,
+    "protein": 5.08,
+    "carbs": 59.3,
+    "fats": 0.424,
+    "image": "https://images.openfoodfacts.org/images/products/000/000/914/1209/front_en.18.400.jpg"
+  },
+  {
+    "code": "0716270001660",
+    "name": "Ginger Crystallized In Dark Chocolate",
+    "calories": 500,
+    "protein": 6.67,
+    "carbs": 53.33,
+    "fats": 33.33,
+    "image": "https://images.openfoodfacts.org/images/products/071/627/000/1660/front_en.41.400.jpg"
+  },
+  {
+    "code": "1234567890128",
+    "name": "Chocolat en poudre",
+    "calories": 116,
+    "protein": 11.1,
+    "carbs": 11.1,
+    "fats": 3.11,
+    "image": "https://images.openfoodfacts.org/images/products/123/456/789/0128/front_en.119.400.jpg"
+  },
+  {
+    "code": "5000171010025",
+    "name": "Wild Pacific Red Salmon",
+    "calories": 151,
+    "protein": 20.4,
+    "carbs": 0,
+    "fats": 7.8,
+    "image": "https://images.openfoodfacts.org/images/products/500/017/101/0025/front_en.27.400.jpg"
+  },
+  {
+    "code": "0020357122682",
+    "name": "Milk",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/002/035/712/2682/front_en.24.400.jpg"
+  },
+  {
+    "code": "8901491101837",
+    "name": "Lays Classics Salted 20rs",
+    "calories": 554,
+    "protein": 7,
+    "carbs": 51.7,
+    "fats": 35.5,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/110/1837/front_en.14.400.jpg"
+  },
+  {
+    "code": "7622201756697",
+    "name": "Oreo",
+    "calories": 483,
+    "protein": 0,
+    "carbs": 71.9,
+    "fats": 19.6,
+    "image": "https://images.openfoodfacts.org/images/products/762/220/175/6697/front_en.3.400.jpg"
+  },
+  {
+    "code": "8901764012273",
+    "name": "Coca Cola Coke Brand 750ml",
+    "calories": 44,
+    "protein": 0,
+    "carbs": 11,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/401/2273/front_en.23.400.jpg"
+  },
+  {
+    "code": "8901491361026",
+    "name": "masala munch 10rs",
+    "calories": 558,
+    "protein": 6.4,
+    "carbs": 55.2,
+    "fats": 34.7,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/136/1026/front_en.24.400.jpg"
+  },
+  {
+    "code": "8901030921667",
+    "name": "kissan",
+    "calories": 133,
+    "protein": 1.33,
+    "carbs": 30.7,
+    "fats": 0.667,
+    "image": "https://images.openfoodfacts.org/images/products/890/103/092/1667/front_en.39.400.jpg"
+  },
+  {
+    "code": "8901030902932",
+    "name": "tomato ketchup",
+    "calories": 133,
+    "protein": 1.33,
+    "carbs": 30.7,
+    "fats": 0.667,
+    "image": "https://images.openfoodfacts.org/images/products/890/103/090/2932/front_en.5.400.jpg"
+  },
+  {
+    "code": "8901764092305",
+    "name": "Maaza Original 1.2ltr",
+    "calories": 54,
+    "protein": 0,
+    "carbs": 13.5,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/409/2305/front_en.4.400.jpg"
+  },
+  {
+    "code": "8901063139374",
+    "name": "BOURBON",
+    "calories": 493.5,
+    "protein": 5,
+    "carbs": 72.7,
+    "fats": 20.3,
+    "image": "https://images.openfoodfacts.org/images/products/890/106/313/9374/front_en.15.400.jpg"
+  },
+  {
+    "code": "8901030897542",
+    "name": "kissan fresh tomato",
+    "calories": 133,
+    "protein": 1.1,
+    "carbs": 31,
+    "fats": 0.4,
+    "image": "https://images.openfoodfacts.org/images/products/890/103/089/7542/front_en.22.400.jpg"
+  },
+  {
+    "code": "8901030921797",
+    "name": "kissan fresh tomato",
+    "calories": 133,
+    "protein": 1.1,
+    "carbs": 31,
+    "fats": 0.4,
+    "image": "https://images.openfoodfacts.org/images/products/890/103/092/1797/front_en.14.400.jpg"
+  },
+  {
+    "code": "8901262200196",
+    "name": "Amul Masti Spiced Buttermilk 200ml",
+    "calories": 28.5,
+    "protein": 1.5,
+    "carbs": 1.8,
+    "fats": 1.5,
+    "image": "https://images.openfoodfacts.org/images/products/890/126/220/0196/front_en.26.400.jpg"
+  },
+  {
+    "code": "8901719125478",
+    "name": "Parle-G gold 75g",
+    "calories": 454,
+    "protein": 6.9,
+    "carbs": 77.3,
+    "fats": 13,
+    "image": "https://images.openfoodfacts.org/images/products/890/171/912/5478/front_en.7.400.jpg"
+  },
+  {
+    "code": "8901491101844",
+    "name": "Lay's Potato Chips",
+    "calories": 577,
+    "protein": 7.16,
+    "carbs": 53.4,
+    "fats": 37.1,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/110/1844/front_en.32.400.jpg"
+  },
+  {
+    "code": "9300633929169",
+    "name": "Chunk Light Tuna",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/930/063/392/9169/front_en.27.400.jpg"
+  },
+  {
+    "code": "8901719128462",
+    "name": "Parle-G",
+    "calories": 454,
+    "protein": 6.9,
+    "carbs": 77.3,
+    "fats": 13,
+    "image": "https://images.openfoodfacts.org/images/products/890/171/912/8462/front_en.10.400.jpg"
+  },
+  {
+    "code": "5000232192202",
+    "name": "FOOD",
+    "calories": 217,
+    "protein": 19.7,
+    "carbs": 0.1,
+    "fats": 21.3,
+    "image": "https://images.openfoodfacts.org/images/products/500/023/219/2202/front_en.4.400.jpg"
+  },
+  {
+    "code": "8901764032271",
+    "name": "Sprite 750ml",
+    "calories": 40,
+    "protein": 0,
+    "carbs": 10,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/403/2271/front_en.50.400.jpg"
+  },
+  {
+    "code": "8901491101813",
+    "name": "Lays 20rs",
+    "calories": 537,
+    "protein": 6.7,
+    "carbs": 53,
+    "fats": 33.1,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/110/1813/front_en.8.400.jpg"
+  },
+  {
+    "code": "8901262010016",
+    "name": "Amul Pasteurized Butter",
+    "calories": 714.28571,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 78.57143,
+    "image": "https://images.openfoodfacts.org/images/products/890/126/201/0016/front_en.53.400.jpg"
+  },
+  {
+    "code": "8901764032912",
+    "name": "Sprite",
+    "calories": 49,
+    "protein": 0,
+    "carbs": 12.2,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/403/2912/front_en.26.400.jpg"
+  },
+  {
+    "code": "3948764012273",
+    "name": "Coca cola Soft Drink 750ml",
+    "calories": 44,
+    "protein": 0,
+    "carbs": 10.9,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/394/876/401/2273/front_en.7.400.jpg"
+  },
+  {
+    "code": "8901453000024",
+    "name": "Rooh Afza",
+    "calories": 414,
+    "protein": 0.5,
+    "carbs": 103.5,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/145/300/0024/front_en.14.400.jpg"
+  },
+  {
+    "code": "8904043901015",
+    "name": "Tata salt",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/404/390/1015/front_en.34.400.jpg"
+  },
+  {
+    "code": "7622202398698",
+    "name": "Cadbury Dairy Milk",
+    "calories": 532,
+    "protein": 7.8,
+    "carbs": 60.4,
+    "fats": 29.2,
+    "image": "https://images.openfoodfacts.org/images/products/762/220/239/8698/front_en.14.400.jpg"
+  },
+  {
+    "code": "8901764092206",
+    "name": "Maaza Original 600ml",
+    "calories": 63,
+    "protein": 0,
+    "carbs": 15.8,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/409/2206/front_en.3.400.jpg"
+  },
+  {
+    "code": "8901595862962",
+    "name": "Ching's Schezwan Chutney",
+    "calories": 172,
+    "protein": 1.9,
+    "carbs": 17.2,
+    "fats": 10.6,
+    "image": "https://images.openfoodfacts.org/images/products/890/159/586/2962/front_en.37.400.jpg"
+  },
+  {
+    "code": "8901764042270",
+    "name": "Thumbs Up 750ml",
+    "calories": 36,
+    "protein": 0,
+    "carbs": 9,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/404/2270/front_en.46.400.jpg"
+  },
+  {
+    "code": "8901764082405",
+    "name": "Kinley Mineral Water 1ltr",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/408/2405/front_en.40.400.jpg"
+  },
+  {
+    "code": "0073935942400",
+    "name": "Manner - Chocolate Cream Filled Wafers, 2.5oz (72g)",
+    "calories": 500,
+    "protein": 3.3333333333333,
+    "carbs": 63.333333333333,
+    "fats": 26.666666666667,
+    "image": "https://images.openfoodfacts.org/images/products/007/393/594/2400/front_en.5.400.jpg"
+  },
+  {
+    "code": "0850006000012",
+    "name": "Yaourt nature sucres U",
+    "calories": 80,
+    "protein": 3,
+    "carbs": 9.6,
+    "fats": 3.3,
+    "image": "https://images.openfoodfacts.org/images/products/085/000/600/0012/front_fr.4.400.jpg"
+  },
+  {
+    "code": "8906017290040",
+    "name": "Bisleri 1ltr MADE IN INDIA",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/601/729/0040/front_en.8.400.jpg"
+  },
+  {
+    "code": "8901764042911",
+    "name": "Thums up",
+    "calories": 39,
+    "protein": 0,
+    "carbs": 9.7,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/404/2911/front_en.41.400.jpg"
+  },
+  {
+    "code": "3948764042270",
+    "name": "Thumbs Up 750ml pet",
+    "calories": 39,
+    "protein": 0,
+    "carbs": 9.7,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/394/876/404/2270/front_en.11.400.jpg"
+  },
+  {
+    "code": "8901058000269",
+    "name": "Maggi",
+    "calories": 384,
+    "protein": 8.14,
+    "carbs": 59.6,
+    "fats": 12.6,
+    "image": "https://images.openfoodfacts.org/images/products/890/105/800/0269/front_en.39.400.jpg"
+  },
+  {
+    "code": "8901764012914",
+    "name": "Coca-Cola",
+    "calories": 44,
+    "protein": 0,
+    "carbs": 10.9,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/401/2914/front_en.29.400.jpg"
+  },
+  {
+    "code": "8901233030548",
+    "name": "Cadbury Dairy Milk",
+    "calories": 527,
+    "protein": 5.6,
+    "carbs": 64.2,
+    "fats": 27.9,
+    "image": "https://images.openfoodfacts.org/images/products/890/123/303/0548/front_en.16.400.jpg"
+  },
+  {
+    "code": "8901764032707",
+    "name": "Sprite",
+    "calories": 40,
+    "protein": 0,
+    "carbs": 10,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/403/2707/front_en.20.400.jpg"
+  },
+  {
+    "code": "8901764042300",
+    "name": "Thums Up  (Coca-Cola)",
+    "calories": 42,
+    "protein": 0,
+    "carbs": 10.6,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/404/2300/front_en.6.400.jpg"
+  },
+  {
+    "code": "8901063162426",
+    "name": "Marie gold",
+    "calories": 445,
+    "protein": 8.4,
+    "carbs": 78.9,
+    "fats": 10.7,
+    "image": "https://images.openfoodfacts.org/images/products/890/106/316/2426/front_en.15.400.jpg"
+  },
+  {
+    "code": "8901063029255",
+    "name": "Jimjam 57g (57)",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/106/302/9255/front_en.9.400.jpg"
+  },
+  {
+    "code": "8904272600291",
+    "name": "Storia 100% Tender Coconut Water 1L",
+    "calories": 20,
+    "protein": 0.1,
+    "carbs": 5,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/427/260/0291/front_en.3.400.jpg"
+  },
+  {
+    "code": "8901262010320",
+    "name": "Amul Butter",
+    "calories": 724,
+    "protein": 1,
+    "carbs": 0,
+    "fats": 80,
+    "image": "https://images.openfoodfacts.org/images/products/890/126/201/0320/front_en.3.400.jpg"
+  },
+  {
+    "code": "8901491502030",
+    "name": "Lay's American Style Cream & Onion Flavour",
+    "calories": 537,
+    "protein": 6.7,
+    "carbs": 53,
+    "fats": 33.1,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/150/2030/front_en.19.400.jpg"
+  },
+  {
+    "code": "8901491103800",
+    "name": "Oats",
+    "calories": 407,
+    "protein": 11.8,
+    "carbs": 68.5,
+    "fats": 9.5,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/110/3800/front_en.4.400.jpg"
+  },
+  {
+    "code": "8901764032905",
+    "name": "Sprite",
+    "calories": 40,
+    "protein": 0,
+    "carbs": 10,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/403/2905/front_en.28.400.jpg"
+  },
+  {
+    "code": "8901047816208",
+    "name": "Dal makhani",
+    "calories": 91,
+    "protein": 5.1,
+    "carbs": 9.1,
+    "fats": 2.9,
+    "image": "https://images.openfoodfacts.org/images/products/890/104/781/6208/front_en.12.400.jpg"
+  },
+  {
+    "code": "8901764175091",
+    "name": "Fruit drink",
+    "calories": 44,
+    "protein": 0,
+    "carbs": 11,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/417/5091/front_en.3.400.jpg"
+  },
+  {
+    "code": "8902080364589",
+    "name": "Mountain Dew",
+    "calories": 49,
+    "protein": 0,
+    "carbs": 12.3,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/208/036/4589/front_en.8.400.jpg"
+  },
+  {
+    "code": "3948764032912",
+    "name": "Sprite",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/394/876/403/2912/front_en.3.400.jpg"
+  },
+  {
+    "code": "8901058000306",
+    "name": "Maggi noodles masala",
+    "calories": 386,
+    "protein": 7.86,
+    "carbs": 60,
+    "fats": 12.9,
+    "image": "https://images.openfoodfacts.org/images/products/890/105/800/0306/front_en.10.400.jpg"
+  },
+  {
+    "code": "8901063142015",
+    "name": "Nutri Choice",
+    "calories": 481,
+    "protein": 9.1,
+    "carbs": 68,
+    "fats": 20.9,
+    "image": "https://images.openfoodfacts.org/images/products/890/106/314/2015/front_en.30.400.jpg"
+  },
+  {
+    "code": "8901491366052",
+    "name": "Puffcorn",
+    "calories": 555,
+    "protein": 6,
+    "carbs": 56.2,
+    "fats": 34.5,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/136/6052/front_en.13.400.jpg"
+  },
+  {
+    "code": "8901764061257",
+    "name": "Diet Coke Can 250ml",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/406/1257/front_en.15.400.jpg"
+  },
+  {
+    "code": "3948764042911",
+    "name": "thums up",
+    "calories": 39,
+    "protein": 0,
+    "carbs": 9.7,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/394/876/404/2911/front_en.10.400.jpg"
+  },
+  {
+    "code": "3948764032271",
+    "name": "Sprite",
+    "calories": 40,
+    "protein": 0,
+    "carbs": 10,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/394/876/403/2271/front_en.11.400.jpg"
+  },
+  {
+    "code": "8901030831690",
+    "name": "kissan mixed fruit jam",
+    "calories": 285,
+    "protein": 0.3,
+    "carbs": 70.5,
+    "fats": 0.1,
+    "image": "https://images.openfoodfacts.org/images/products/890/103/083/1690/front_en.15.400.jpg"
+  },
+  {
+    "code": "8901491503037",
+    "name": "American Style Cream & Onion 10rs",
+    "calories": 537,
+    "protein": 6.7,
+    "carbs": 53,
+    "fats": 33.1,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/150/3037/front_en.24.400.jpg"
+  },
+  {
+    "code": "8901491367219",
+    "name": "kurkure",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/136/7219/front_en.6.400.jpg"
+  },
+  {
+    "code": "8906069403412",
+    "name": "Chef's Special Tomato Ketchup",
+    "calories": 98.6,
+    "protein": 0.85,
+    "carbs": 23.8,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/606/940/3412/front_en.15.400.jpg"
+  },
+  {
+    "code": "8901063017627",
+    "name": "Brit 50-50 maska chaska 40g (20)",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/106/301/7627/front_en.3.400.jpg"
+  },
+  {
+    "code": "8901058005608",
+    "name": "Maggi",
+    "calories": 385,
+    "protein": 8.27,
+    "carbs": 59.6,
+    "fats": 12.5,
+    "image": "https://images.openfoodfacts.org/images/products/890/105/800/5608/front_en.6.400.jpg"
+  },
+  {
+    "code": "3168930007432",
+    "name": "Chips barbecue",
+    "calories": 532,
+    "protein": 6.4,
+    "carbs": 52,
+    "fats": 32,
+    "image": "https://images.openfoodfacts.org/images/products/316/893/000/7432/front_fr.52.400.jpg"
+  },
+  {
+    "code": "8901491503051",
+    "name": "West Indies' Hot 'n' Sweet Chilli",
+    "calories": 534,
+    "protein": 6.3,
+    "carbs": 55.4,
+    "fats": 31.9,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/150/3051/front_en.3.400.jpg"
+  },
+  {
+    "code": "8901088000345",
+    "name": "Coconut oil",
+    "calories": 900,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 100,
+    "image": "https://images.openfoodfacts.org/images/products/890/108/800/0345/front_en.15.400.jpg"
+  },
+  {
+    "code": "8901207040337",
+    "name": "Chyawanprash Awaleha",
+    "calories": 50,
+    "protein": 0,
+    "carbs": 11,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/120/704/0337/front_en.34.400.jpg"
+  },
+  {
+    "code": "8901030831706",
+    "name": "Mixed fruit Jam",
+    "calories": 286.66667,
+    "protein": 0,
+    "carbs": 70.66667,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/103/083/1706/front_en.14.400.jpg"
+  },
+  {
+    "code": "8901030824227",
+    "name": "Boost",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/103/082/4227/front_en.14.400.jpg"
+  },
+  {
+    "code": "3948764012914",
+    "name": "Cocacola zero",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/394/876/401/2914/front_en.3.400.jpg"
+  },
+  {
+    "code": "8901764362804",
+    "name": "Pulpy Orange",
+    "calories": 52,
+    "protein": 0,
+    "carbs": 13.1,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/436/2804/front_en.40.400.jpg"
+  },
+  {
+    "code": "7622201756741",
+    "name": "Sandwich Biscuit",
+    "calories": 483,
+    "protein": 5.3,
+    "carbs": 71.4,
+    "fats": 19.7,
+    "image": "https://images.openfoodfacts.org/images/products/762/220/175/6741/front_en.11.400.jpg"
+  },
+  {
+    "code": "8992760221028",
+    "name": "Oreo Original",
+    "calories": 471,
+    "protein": 3.62,
+    "carbs": 72.5,
+    "fats": 21.7,
+    "image": "https://images.openfoodfacts.org/images/products/899/276/022/1028/front_en.40.400.jpg"
+  },
+  {
+    "code": "8901491103794",
+    "name": "Quaker oats",
+    "calories": 408,
+    "protein": 11.8,
+    "carbs": 68.5,
+    "fats": 9.5,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/110/3794/front_en.5.400.jpg"
+  },
+  {
+    "code": "8901207900839",
+    "name": "Hajmola Regular",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/120/790/0839/front_en.15.400.jpg"
+  },
+  {
+    "code": "8901491365703",
+    "name": "Puffcorn",
+    "calories": 536,
+    "protein": 6.4,
+    "carbs": 66.5,
+    "fats": 27.1,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/136/5703/front_en.30.400.jpg"
+  },
+  {
+    "code": "8901262200189",
+    "name": "Amul Lassi 200ml",
+    "calories": 88.5,
+    "protein": 2.1,
+    "carbs": 14.5,
+    "fats": 2.1,
+    "image": "https://images.openfoodfacts.org/images/products/890/126/220/0189/front_en.7.400.jpg"
+  },
+  {
+    "code": "8901764042904",
+    "name": "Thumsup",
+    "calories": 39,
+    "protein": 0,
+    "carbs": 9.7,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/176/404/2904/front_en.6.400.jpg"
+  },
+  {
+    "code": "0712345678904",
+    "name": "Farb",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/071/234/567/8904/front_en.29.400.jpg"
+  },
+  {
+    "code": "8902080104581",
+    "name": "Pepsi",
+    "calories": 43,
+    "protein": 0,
+    "carbs": 10.9,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/208/010/4581/front_en.3.400.jpg"
+  },
+  {
+    "code": "5410942104158",
+    "name": "Passendale classic",
+    "calories": 353,
+    "protein": 23,
+    "carbs": 0,
+    "fats": 29,
+    "image": "https://images.openfoodfacts.org/images/products/541/094/210/4158/front_nl.64.400.jpg"
+  },
+  {
+    "code": "8901491503020",
+    "name": "masala",
+    "calories": 539,
+    "protein": 6.9,
+    "carbs": 53.4,
+    "fats": 33.1,
+    "image": "https://images.openfoodfacts.org/images/products/890/149/150/3020/front_en.25.400.jpg"
+  },
+  {
+    "code": "8908013982646",
+    "name": "Lahori Zeera",
+    "calories": 47.2,
+    "protein": 0.2,
+    "carbs": 11.8,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/801/398/2646/front_en.10.400.jpg"
+  },
+  {
+    "code": "8901058903164",
+    "name": "KitKat",
+    "calories": 436,
+    "protein": 6.23,
+    "carbs": 47.8,
+    "fats": 24.9,
+    "image": "https://images.openfoodfacts.org/images/products/890/105/890/3164/front_en.19.400.jpg"
+  },
+  {
+    "code": "8901207019234",
+    "name": "Hajmola",
+    "calories": 0,
+    "protein": 0,
+    "carbs": 0,
+    "fats": 0,
+    "image": "https://images.openfoodfacts.org/images/products/890/120/701/9234/front_fr.5.400.jpg"
+  },
+  {
+    "code": "8904258701707",
+    "name": "Coconut Water",
+    "calories": 24.8,
+    "protein": 0.19,
+    "carbs": 5.6,
+    "fats": 0.18,
+    "image": "https://images.openfoodfacts.org/images/products/890/425/870/1707/front_en.5.400.jpg"
+  }
+]

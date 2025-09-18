@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   Alert,
   TouchableOpacity,
   Share,
+  RefreshControl,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarChart } from "react-native-chart-kit";
@@ -30,8 +31,16 @@ const chartConfig = {
   strokeWidth: 2,
 };
 
+// 🔹 Mini Tip Component
+const Tip = ({ text, color, icon }) => (
+  <Text style={{ marginBottom: 8, color }}>
+    {icon} {text}
+  </Text>
+);
+
 export default function AnalyticsModule() {
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [reportData, setReportData] = useState({
     weekly: { labels: [], datasets: [{ data: [] }] },
     monthly: { labels: [], datasets: [{ data: [] }] },
@@ -44,152 +53,132 @@ export default function AnalyticsModule() {
     fats: 0,
   });
 
-  useEffect(() => {
-    const fetchAnalyticsData = async () => {
-      try {
-        const savedFoods = await AsyncStorage.getItem("selectedFoods");
-        const meals = savedFoods ? JSON.parse(savedFoods) : [];
+  const fetchAnalyticsData = async () => {
+    try {
+      const savedFoods = await AsyncStorage.getItem("selectedFoods");
+      const meals = savedFoods ? JSON.parse(savedFoods) : [];
 
-        // Ensure timestamps are valid Date objects
-        const parsedMeals = meals
-          .map((meal) => ({
-            ...meal,
-            timestamp: meal.timestamp ? new Date(meal.timestamp) : null,
-          }))
-          .filter((meal) => meal.timestamp !== null);
+      const parsedMeals = meals
+        .map((meal) => ({
+          ...meal,
+          timestamp: meal.timestamp ? new Date(meal.timestamp) : null,
+        }))
+        .filter((meal) => meal.timestamp !== null);
 
-        const today = new Date();
-        const thirtyDaysAgo = new Date(today);
-        thirtyDaysAgo.setDate(today.getDate() - 30);
+      const today = new Date();
+      const thirtyDaysAgo = new Date(today);
+      thirtyDaysAgo.setDate(today.getDate() - 30);
 
-        const dailyTotals = {};
-        let sumTotals = { calories: 0, protein: 0, carbs: 0, fats: 0 };
+      const dailyTotals = {};
+      let sumTotals = { calories: 0, protein: 0, carbs: 0, fats: 0 };
 
-        parsedMeals.forEach((meal) => {
-          if (meal.timestamp >= thirtyDaysAgo) {
-            const date = meal.timestamp.toISOString().split("T")[0];
-            if (!dailyTotals[date]) {
-              dailyTotals[date] = { calories: 0, protein: 0, carbs: 0, fats: 0 };
-            }
-            dailyTotals[date].calories += meal.calories || 0;
-            dailyTotals[date].protein += meal.protein || 0;
-            dailyTotals[date].carbs += meal.carbs || 0;
-            dailyTotals[date].fats += meal.fats || 0;
-
-            // For tips (sum totals for last 7 days)
-            sumTotals.calories += meal.calories || 0;
-            sumTotals.protein += meal.protein || 0;
-            sumTotals.carbs += meal.carbs || 0;
-            sumTotals.fats += meal.fats || 0;
+      parsedMeals.forEach((meal) => {
+        if (meal.timestamp >= thirtyDaysAgo) {
+          const date = meal.timestamp.toISOString().split("T")[0];
+          if (!dailyTotals[date]) {
+            dailyTotals[date] = { calories: 0, protein: 0, carbs: 0, fats: 0 };
           }
-        });
+          dailyTotals[date].calories += meal.calories || 0;
+          dailyTotals[date].protein += meal.protein || 0;
+          dailyTotals[date].carbs += meal.carbs || 0;
+          dailyTotals[date].fats += meal.fats || 0;
 
-        setTotals(sumTotals);
-
-        // Weekly (last 7 days)
-        const weeklyLabels = [];
-        const weeklyCalories = [];
-        for (let i = 6; i >= 0; i--) {
-          const date = new Date(today);
-          date.setDate(today.getDate() - i);
-          const formattedDate = date.toISOString().split("T")[0];
-          weeklyLabels.push(date.toLocaleString("en-US", { weekday: "short" }));
-          weeklyCalories.push(dailyTotals[formattedDate]?.calories || 0);
+          sumTotals.calories += meal.calories || 0;
+          sumTotals.protein += meal.protein || 0;
+          sumTotals.carbs += meal.carbs || 0;
+          sumTotals.fats += meal.fats || 0;
         }
+      });
 
-        // Monthly (last 30 days)
-        const monthlyLabels = [];
-        const monthlyCalories = [];
-        for (let i = 29; i >= 0; i--) {
-          const date = new Date(today);
-          date.setDate(today.getDate() - i);
-          const formattedDate = date.toISOString().split("T")[0];
-          if (i % 5 === 0) {
-            monthlyLabels.push(date.getDate().toString());
-          } else {
-            monthlyLabels.push("");
-          }
-          monthlyCalories.push(dailyTotals[formattedDate]?.calories || 0);
-        }
+      setTotals(sumTotals);
 
-        setReportData({
-          weekly: {
-            labels: weeklyLabels,
-            datasets: [{ data: weeklyCalories }],
-          },
-          monthly: {
-            labels: monthlyLabels,
-            datasets: [{ data: monthlyCalories }],
-          },
-        });
-      } catch (error) {
-        console.error("Error fetching analytics data:", error);
-        Alert.alert("Error", "Could not load analytics data.");
-      } finally {
-        setLoading(false);
+      // Weekly
+      const weeklyLabels = [];
+      const weeklyCalories = [];
+      for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const formattedDate = date.toISOString().split("T")[0];
+        weeklyLabels.push(date.toLocaleString("en-US", { weekday: "short" }));
+        weeklyCalories.push(dailyTotals[formattedDate]?.calories || 0);
       }
-    };
 
+      // Monthly
+      const monthlyLabels = [];
+      const monthlyCalories = [];
+      for (let i = 29; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(today.getDate() - i);
+        const formattedDate = date.toISOString().split("T")[0];
+        monthlyLabels.push(i % 5 === 0 ? date.getDate().toString() : "");
+        monthlyCalories.push(dailyTotals[formattedDate]?.calories || 0);
+      }
+
+      setReportData({
+        weekly: { labels: weeklyLabels, datasets: [{ data: weeklyCalories }] },
+        monthly: { labels: monthlyLabels, datasets: [{ data: monthlyCalories }] },
+      });
+    } catch (error) {
+      console.error("Error fetching analytics data:", error);
+      Alert.alert("Error", "Could not load analytics data.");
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchAnalyticsData();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     fetchAnalyticsData();
   }, []);
 
   // ✅ Tips logic
   const getTips = () => {
-    let tips = [];
+    const tips = [];
+    const { calories, protein, carbs, fats } = totals;
 
     // Calories
-    if (totals.calories < GUIDELINES.calories.min) {
-      tips.push({ text: "Your calorie intake is too low. Add balanced meals like rice, roti, or grains.", color: "red" });
-    } else if (totals.calories > GUIDELINES.calories.max) {
-      tips.push({ text: "You’ve exceeded your calorie target. Reduce snacks or high-sugar foods.", color: "red" });
-    } else {
-      tips.push({ text: "Calories are within range. ✅", color: "green" });
-    }
+    if (calories < GUIDELINES.calories.min)
+      tips.push({ text: "Calories too low. Add grains or rice.", color: "red", icon: "⚠️" });
+    else if (calories > GUIDELINES.calories.max)
+      tips.push({ text: "Calories too high. Cut snacks & sugar.", color: "red", icon: "❌" });
+    else tips.push({ text: "Calories on track ✅", color: "green", icon: "✅" });
 
     // Protein
-    if (totals.protein < GUIDELINES.protein.min) {
-      tips.push({ text: "Low protein intake — add eggs, chicken, lentils, or tofu.", color: "red" });
-    } else if (totals.protein > GUIDELINES.protein.max) {
-      tips.push({ text: "High protein intake — balance with carbs & fats.", color: "orange" });
-    } else {
-      tips.push({ text: "Protein intake is on target. 💪", color: "green" });
-    }
+    if (protein < GUIDELINES.protein.min)
+      tips.push({ text: "Low protein — eat eggs, lentils, or tofu.", color: "red", icon: "⚠️" });
+    else if (protein > GUIDELINES.protein.max)
+      tips.push({ text: "Protein high — balance with carbs & fats.", color: "orange", icon: "⚠️" });
+    else tips.push({ text: "Protein good 💪", color: "green", icon: "✅" });
 
     // Carbs
-    if (totals.carbs < GUIDELINES.carbs.min) {
-      tips.push({ text: "Carbs are low. Add fruits, rice, or whole wheat.", color: "orange" });
-    } else if (totals.carbs > GUIDELINES.carbs.max) {
-      tips.push({ text: "Carbs are high — reduce sugary/refined foods.", color: "red" });
-    } else {
-      tips.push({ text: "Carb intake is balanced. 🍞", color: "green" });
-    }
+    if (carbs < GUIDELINES.carbs.min)
+      tips.push({ text: "Carbs low. Add fruits, wheat, or rice.", color: "orange", icon: "⚠️" });
+    else if (carbs > GUIDELINES.carbs.max)
+      tips.push({ text: "Carbs high — reduce refined foods.", color: "red", icon: "❌" });
+    else tips.push({ text: "Carbs balanced 🍞", color: "green", icon: "✅" });
 
     // Fats
-    if (totals.fats < GUIDELINES.fats.min) {
-      tips.push({ text: "Fats are low. Add nuts, seeds, or avocado.", color: "orange" });
-    } else if (totals.fats > GUIDELINES.fats.max) {
-      tips.push({ text: "Fats are high — cut down fried/processed foods.", color: "red" });
-    } else {
-      tips.push({ text: "Fats are within range. 🥑", color: "green" });
-    }
+    if (fats < GUIDELINES.fats.min)
+      tips.push({ text: "Fats low. Add nuts, seeds, avocado.", color: "orange", icon: "⚠️" });
+    else if (fats > GUIDELINES.fats.max)
+      tips.push({ text: "Fats high — avoid fried foods.", color: "red", icon: "❌" });
+    else tips.push({ text: "Fats healthy 🥑", color: "green", icon: "✅" });
 
     return tips;
   };
 
   const onShare = async () => {
     try {
-      const weeklyCalories = reportData.weekly.datasets[0].data.reduce(
-        (a, b) => a + b,
-        0
-      );
-      const monthlyCalories = reportData.monthly.datasets[0].data.reduce(
-        (a, b) => a + b,
-        0
-      );
+      const weeklyCalories = reportData.weekly.datasets[0].data.reduce((a, b) => a + b, 0);
+      const monthlyCalories = reportData.monthly.datasets[0].data.reduce((a, b) => a + b, 0);
 
       await Share.share({
-        message:
-          `📊 Nutritional Report\n\n--- Weekly Summary ---\nTotal Calories: ${weeklyCalories}\n\n--- Monthly Summary ---\nTotal Calories: ${monthlyCalories}`,
+        message: `📊 Nutrition Report\n\n--- Weekly ---\nCalories: ${weeklyCalories}\nProtein: ${totals.protein}\nCarbs: ${totals.carbs}\nFats: ${totals.fats}\n\n--- Monthly ---\nCalories: ${monthlyCalories}`,
       });
     } catch (error) {
       Alert.alert("Error", error.message);
@@ -204,55 +193,48 @@ export default function AnalyticsModule() {
     );
   }
 
-  const chartData =
-    selectedPeriod === "weekly" ? reportData.weekly : reportData.monthly;
+  const chartData = selectedPeriod === "weekly" ? reportData.weekly : reportData.monthly;
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
         <Text style={styles.title}>Your Health Analytics</Text>
+
+        {/* Summary */}
+        <View style={styles.summaryBox}>
+          <Text style={styles.summaryText}>📅 Last 30 Days</Text>
+          <Text style={styles.summaryValue}>
+            Calories: {totals.calories} | Protein: {totals.protein}g | Carbs: {totals.carbs}g | Fats: {totals.fats}g
+          </Text>
+        </View>
 
         {/* Period Toggle */}
         <View style={styles.periodSelector}>
-          <TouchableOpacity
-            style={[
-              styles.periodButton,
-              selectedPeriod === "weekly" && styles.selectedPeriod,
-            ]}
-            onPress={() => setSelectedPeriod("weekly")}
-          >
-            <Text
-              style={[
-                styles.periodButtonText,
-                selectedPeriod === "weekly" && styles.selectedPeriodText,
-              ]}
+          {["weekly", "monthly"].map((period) => (
+            <TouchableOpacity
+              key={period}
+              style={[styles.periodButton, selectedPeriod === period && styles.selectedPeriod]}
+              onPress={() => setSelectedPeriod(period)}
             >
-              Weekly
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.periodButton,
-              selectedPeriod === "monthly" && styles.selectedPeriod,
-            ]}
-            onPress={() => setSelectedPeriod("monthly")}
-          >
-            <Text
-              style={[
-                styles.periodButtonText,
-                selectedPeriod === "monthly" && styles.selectedPeriodText,
-              ]}
-            >
-              Monthly
-            </Text>
-          </TouchableOpacity>
+              <Text
+                style={[
+                  styles.periodButtonText,
+                  selectedPeriod === period && styles.selectedPeriodText,
+                ]}
+              >
+                {period.charAt(0).toUpperCase() + period.slice(1)}
+              </Text>
+            </TouchableOpacity>
+          ))}
         </View>
 
         {/* Chart */}
         <View style={styles.chartContainer}>
           <Text style={styles.chartTitle}>
-            Calorie Intake (
-            {selectedPeriod.charAt(0).toUpperCase() + selectedPeriod.slice(1)})
+            {selectedPeriod === "weekly" ? "Weekly" : "Monthly"} Calorie Intake
           </Text>
           {chartData.datasets[0].data.length > 0 ? (
             <BarChart
@@ -265,7 +247,7 @@ export default function AnalyticsModule() {
             />
           ) : (
             <Text style={styles.noDataText}>
-              No data to display. Log some meals!
+              No data yet. Log meals to see analytics 📖
             </Text>
           )}
         </View>
@@ -274,9 +256,7 @@ export default function AnalyticsModule() {
         <View style={styles.guidelineSection}>
           <Text style={styles.sectionTitle}>💡 Tips</Text>
           {getTips().map((tip, idx) => (
-            <Text key={idx} style={{ marginBottom: 8, color: tip.color }}>
-              • {tip.text}
-            </Text>
+            <Tip key={idx} {...tip} />
           ))}
         </View>
 
@@ -294,18 +274,18 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#F0F2F5" },
   centeredContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
   scrollContainer: { padding: 20 },
-  title: {
-    fontSize: 26,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 20,
-    textAlign: "center",
+  title: { fontSize: 26, fontWeight: "bold", color: "#333", marginBottom: 20, textAlign: "center" },
+  summaryBox: {
+    backgroundColor: "#fff",
+    padding: 15,
+    borderRadius: 12,
+    marginBottom: 15,
+    alignItems: "center",
+    elevation: 3,
   },
-  periodSelector: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginBottom: 20,
-  },
+  summaryText: { fontSize: 16, color: "#555", marginBottom: 5 },
+  summaryValue: { fontSize: 15, fontWeight: "600", color: "#222" },
+  periodSelector: { flexDirection: "row", justifyContent: "center", marginBottom: 20 },
   periodButton: {
     paddingHorizontal: 20,
     paddingVertical: 10,
@@ -322,9 +302,6 @@ const styles = StyleSheet.create({
     padding: 10,
     marginBottom: 20,
     alignItems: "center",
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
     elevation: 3,
   },
   chartTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
@@ -333,18 +310,9 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 20,
     marginBottom: 20,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
     elevation: 3,
   },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-    marginBottom: 10,
-    textAlign: "center",
-  },
+  sectionTitle: { fontSize: 18, fontWeight: "bold", color: "#333", marginBottom: 10, textAlign: "center" },
   exportButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -353,11 +321,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
   },
-  exportButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "bold",
-    marginLeft: 10,
-  },
+  exportButtonText: { color: "#fff", fontSize: 16, fontWeight: "bold", marginLeft: 10 },
   noDataText: { textAlign: "center", color: "#777", paddingVertical: 50 },
 });

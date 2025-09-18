@@ -14,6 +14,35 @@ import { useNavigation } from "@react-navigation/native";
 import LinearGradient from "react-native-linear-gradient";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import auth from "@react-native-firebase/auth"; 
+import * as Progress from "react-native-progress"; // ✅ Progress Bars
+
+// 🔹 Mini component for Stat Card
+const StatCard = ({ icon, color, label, value, progress }) => (
+  <View style={styles.statCard}>
+    <Icon name={icon} size={30} color={color} />
+    <Text style={styles.statValue}>{value}</Text>
+    <Progress.Bar
+      progress={progress}
+      width={120}
+      color={color}
+      height={8}
+      style={{ marginVertical: 6 }}
+    />
+    <Text style={styles.statLabel}>{label}</Text>
+  </View>
+);
+
+// 🔹 Mini component for Navigation Grid Item
+const GridItem = ({ name, icon, color, route, navigation }) => (
+  <TouchableOpacity
+    style={styles.gridItem}
+    onPress={() => navigation.navigate(route)}
+  >
+    <Icon name={icon} size={36} color={color} />
+    <Text style={styles.gridText}>{name}</Text>
+  </TouchableOpacity>
+);
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -32,20 +61,32 @@ export default function HomeScreen() {
     waterGoal: 2500,
   });
 
-  // 🔹 Load data
+  // 🔹 Time-based greeting
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour < 12) return "Good Morning";
+    if (hour < 18) return "Good Afternoon";
+    return "Good Evening";
+  };
+
+  // 🔹 Load data efficiently
   useEffect(() => {
     const loadData = async () => {
       try {
-        const profile = await AsyncStorage.getItem("userProfile");
-        if (profile) setUserData(JSON.parse(profile));
+        const [profile, savedGoals, savedFoods, waterIntake] =
+          await Promise.all([
+            AsyncStorage.getItem("userProfile"),
+            AsyncStorage.getItem("nutritionGoals"),
+            AsyncStorage.getItem("selectedFoods"),
+            AsyncStorage.getItem("waterIntake"),
+          ]);
 
-        const savedGoals = await AsyncStorage.getItem("nutritionGoals");
+        if (profile) setUserData(JSON.parse(profile));
         if (savedGoals) setGoals(JSON.parse(savedGoals));
 
-        const savedFoods = await AsyncStorage.getItem("selectedFoods");
         const meals = savedFoods ? JSON.parse(savedFoods) : [];
-
         const today = new Date().toISOString().split("T")[0];
+
         let calories = 0;
         let protein = 0;
 
@@ -57,7 +98,7 @@ export default function HomeScreen() {
           }
         });
 
-        const water = parseInt(await AsyncStorage.getItem("waterIntake")) || 0;
+        const water = parseInt(waterIntake) || 0;
         setTotals({ calories, protein, water });
       } catch (err) {
         console.error("Error loading home data:", err);
@@ -69,6 +110,15 @@ export default function HomeScreen() {
     return focusListener;
   }, [navigation]);
 
+  // 🔹 Logout handler
+  const handleLogout = async () => {
+    try {
+      await auth().signOut();
+    } catch (error) {
+      Alert.alert("Logout Error", error.message);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -77,11 +127,9 @@ export default function HomeScreen() {
           <View style={styles.headerRow}>
             <View>
               <Text style={styles.welcomeText}>
-                Hi, {userData?.name || "User"} 👋
+                {getGreeting()}, {userData?.name || "User"} 👋
               </Text>
-              <Text style={styles.subText}>
-                Stay motivated, stay strong 💪
-              </Text>
+              <Text style={styles.subText}>Stay motivated, stay strong 💪</Text>
             </View>
             <TouchableOpacity onPress={() => setMenuVisible(true)}>
               <Image
@@ -96,53 +144,72 @@ export default function HomeScreen() {
           </View>
         </LinearGradient>
 
-        {/* Stats */}
+        {/* Stats with Progress Bars */}
         <View style={styles.statsContainer}>
-          {[
-            {
-              icon: "fire",
-              color: "#FF6B6B",
-              label: "Calories",
-              value: `${Math.round(totals.calories)}/${goals.calorieGoal} kcal`,
-            },
-            {
-              icon: "dumbbell",
-              color: "#4D96FF",
-              label: "Protein",
-              value: `${Math.round(totals.protein)}/${goals.proteinGoal} g`,
-            },
-            {
-              icon: "cup-water",
-              color: "#1ABC9C",
-              label: "Water",
-              value: `${Math.round(totals.water / 1000)}/${goals.waterGoal / 1000} L`,
-            },
-          ].map((item, index) => (
-            <View key={index} style={styles.statCard}>
-              <Icon name={item.icon} size={30} color={item.color} />
-              <Text style={styles.statValue}>{item.value}</Text>
-              <Text style={styles.statLabel}>{item.label}</Text>
-            </View>
-          ))}
+          <StatCard
+            icon="fire"
+            color="#FF6B6B"
+            label="Calories"
+            value={`${Math.round(totals.calories)}/${goals.calorieGoal} kcal`}
+            progress={totals.calories / goals.calorieGoal}
+          />
+          <StatCard
+            icon="dumbbell"
+            color="#4D96FF"
+            label="Protein"
+            value={`${Math.round(totals.protein)}/${goals.proteinGoal} g`}
+            progress={totals.protein / goals.proteinGoal}
+          />
+          <StatCard
+            icon="cup-water"
+            color="#1ABC9C"
+            label="Water"
+            value={`${Math.round(totals.water / 1000)}/${goals.waterGoal / 1000} L`}
+            progress={totals.water / goals.waterGoal}
+          />
         </View>
 
         {/* Navigation Grid */}
         <View style={styles.grid}>
           {[
-            { name: "Meal Log", icon: "food", color: "#FF9800", route: "MealLogScreen" },
-            { name: "Goals", icon: "target", color: "#F44336", route: "GoalManagementScreen" },
-            { name: "Tips", icon: "lightbulb-on", color: "#FFD700", route: "RecommendationModule" },
-            { name: "Analytics", icon: "chart-line", color: "#42A5F5", route: "AnalyticsModule" },
-            { name: "Barcode Scanner", icon: "barcode-scan", color: "#8E24AA", route: "BarcodeScannerScreen" },
+            {
+              name: "Meal Log",
+              icon: "food",
+              color: "#FF9800",
+              route: "MealLogScreen",
+            },
+            {
+              name: "Goals",
+              icon: "target",
+              color: "#F44336",
+              route: "GoalManagementScreen",
+            },
+            {
+              name: "Tips",
+              icon: "lightbulb-on",
+              color: "#FFD700",
+              route: "RecommendationModule",
+            },
+            {
+              name: "Analytics",
+              icon: "chart-line",
+              color: "#42A5F5",
+              route: "AnalyticsModule",
+            },
+            {
+              name: "Barcode Scanner",
+              icon: "barcode-scan",
+              color: "#8E24AA",
+              route: "BarcodeScannerScreen",
+            },
+            {
+              name: "Notifications",
+              icon: "bell-ring",
+              color: "#FF5722",
+              route: "NotificationSettingsScreen",
+            },
           ].map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.gridItem}
-              onPress={() => navigation.navigate(item.route)}
-            >
-              <Icon name={item.icon} size={36} color={item.color} />
-              <Text style={styles.gridText}>{item.name}</Text>
-            </TouchableOpacity>
+            <GridItem key={index} {...item} navigation={navigation} />
           ))}
         </View>
       </ScrollView>
@@ -164,6 +231,16 @@ export default function HomeScreen() {
             >
               <Icon name="account-circle" size={22} color="#6A11CB" />
               <Text style={styles.menuText}>Profile</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.menuItem}
+              onPress={() => {
+                setMenuVisible(false);
+                handleLogout();
+              }}
+            >
+              <Icon name="logout" size={22} color="#E74C3C" />
+              <Text style={styles.menuText}>Logout</Text>
             </TouchableOpacity>
           </View>
         </TouchableOpacity>
@@ -197,6 +274,7 @@ const styles = StyleSheet.create({
   },
   statsContainer: {
     flexDirection: "row",
+    flexWrap: "wrap", // ✅ makes layout responsive
     justifyContent: "space-around",
     marginHorizontal: 15,
     marginBottom: 25,
@@ -207,38 +285,45 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 10,
     alignItems: "center",
-    width: "28%",
+    flex: 1,
+    marginHorizontal: 5,
   },
-  statValue: { fontSize: 16, fontWeight: "bold", marginTop: 5, color: "#2C3E50" },
-  statLabel: { fontSize: 12, color: "#7F8C8D", marginTop: 3 },
+  statValue: { fontSize: 16, fontWeight: "bold", marginTop: 8 },
+  statLabel: { fontSize: 14, color: "#666" },
   grid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
+    justifyContent: "space-around",
+    paddingHorizontal: 10,
   },
   gridItem: {
+    width: "40%",
     backgroundColor: "#fff",
-    width: "47%",
-    borderRadius: 20,
-    padding: 25,
-    marginBottom: 18,
+    borderRadius: 15,
+    padding: 20,
+    marginVertical: 10,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
   },
-  gridText: { marginTop: 12, fontSize: 15, fontWeight: "700", color: "#34495E" },
+  gridText: { marginTop: 10, fontSize: 16, fontWeight: "600" },
   modalOverlay: {
     flex: 1,
-    backgroundColor: "rgba(0,0,0,0.4)",
+    backgroundColor: "rgba(0,0,0,0.3)",
     justifyContent: "flex-end",
-    alignItems: "center",
   },
   menuBox: {
     backgroundColor: "#fff",
-    borderRadius: 20,
-    paddingVertical: 10,
-    width: 220,
-    marginBottom: 80,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    padding: 20,
   },
-  menuItem: { flexDirection: "row", alignItems: "center", padding: 14 },
-  menuText: { marginLeft: 10, fontSize: 16, fontWeight: "600", color: "#2C3E50" },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 15,
+  },
+  menuText: { marginLeft: 10, fontSize: 16, fontWeight: "500" },
 });

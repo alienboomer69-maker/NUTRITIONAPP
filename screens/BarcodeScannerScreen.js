@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
@@ -9,68 +9,123 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// ✅ Import local barcode database
+// ✅ Import local barcode database (fallback)
 import barcodeData from "./assets/barcodes.json";
 
-// ✅ Map product images
+// ✅ Map product images (for local items)
 const images = {
   "amul_milk.png": require("./assets/amul_milk.png"),
   "parle_g.png": require("./assets/parle_g.png"),
 };
+
+// 🔹 Fetch from OpenFoodFacts API
+async function fetchOpenFoodFacts(barcode) {
+  try {
+    const response = await fetch(
+      `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`
+    );
+    const data = await response.json();
+
+    if (data.status === 1) {
+      const product = data.product;
+      return {
+        code: barcode,
+        name: product.product_name || "Unknown Product",
+        calories: product.nutriments["energy-kcal_100g"] || 0,
+        protein: product.nutriments.proteins_100g || 0,
+        carbs: product.nutriments.carbohydrates_100g || 0,
+        fats: product.nutriments.fat_100g || 0,
+        image: product.image_url || null,
+        source: "openfoodfacts",
+      };
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.error("OpenFoodFacts fetch error:", err);
+    return null;
+  }
+}
 
 export default function BarcodeScannerScreen() {
   const [product, setProduct] = useState(null);
   const [enteredCode, setEnteredCode] = useState("");
   const [totalCalories, setTotalCalories] = useState(0);
   const [consumedList, setConsumedList] = useState([]);
+  const cachedFoods = useRef({});
 
-  // ✅ Load from storage (shared with MealLog)
+  // 🔹 Load consumed products + cached foods
   useEffect(() => {
-    const loadData = async () => {
+    (async () => {
       try {
         const savedFoods = await AsyncStorage.getItem("selectedFoods");
-        if (savedFoods !== null) {
+        if (savedFoods) {
           const parsed = JSON.parse(savedFoods);
           setConsumedList(parsed);
-          const total = parsed.reduce((sum, item) => sum + (item.calories || 0), 0);
+          const total = parsed.reduce(
+            (sum, item) => sum + (item.calories || 0),
+            0
+          );
           setTotalCalories(total);
         }
+
+        const savedCache = await AsyncStorage.getItem("scannedFoods");
+        if (savedCache) cachedFoods.current = JSON.parse(savedCache);
       } catch (error) {
         console.log("Error loading data:", error);
       }
-    };
-    loadData();
+    })();
   }, []);
 
-  // ✅ Save to storage whenever consumedList changes
+  // 🔹 Save consumedList to AsyncStorage
   useEffect(() => {
-    const saveData = async () => {
-      try {
-        await AsyncStorage.setItem("selectedFoods", JSON.stringify(consumedList));
-      } catch (error) {
-        console.log("Error saving data:", error);
-      }
-    };
-    saveData();
+    AsyncStorage.setItem("selectedFoods", JSON.stringify(consumedList)).catch(
+      (err) => console.log("Error saving data:", err)
+    );
   }, [consumedList]);
 
-  // ✅ Find product by barcode
-  const searchProduct = () => {
+  // 🔹 Search product (local → cache → API)
+  const searchProduct = async () => {
+    // 1. Local JSON
     const found = barcodeData.find((item) => item.code === enteredCode);
-    setProduct(found || null);
+    if (found) {
+      setProduct(found);
+      return;
+    }
+
+    // 2. Cached
+    if (cachedFoods.current[enteredCode]) {
+      setProduct(cachedFoods.current[enteredCode]);
+      return;
+    }
+
+    // 3. OpenFoodFacts API
+    const apiProduct = await fetchOpenFoodFacts(enteredCode);
+    if (apiProduct) {
+      setProduct(apiProduct);
+
+      cachedFoods.current[enteredCode] = apiProduct;
+      await AsyncStorage.setItem(
+        "scannedFoods",
+        JSON.stringify(cachedFoods.current)
+      );
+      return;
+    }
+
+    Alert.alert("❌ Not Found", "This product is not available.");
   };
 
-  // ✅ Consume product → stored in MealLog (selectedFoods)
+  // 🔹 Consume product
   const consumeProduct = () => {
     if (!product) return;
 
     const newEntry = {
       id: Date.now().toString(),
       ...product,
-      source: "barcode", // 🔖 mark as from barcode
       timestamp: new Date().toISOString(),
     };
 
@@ -78,7 +133,7 @@ export default function BarcodeScannerScreen() {
     setTotalCalories((prev) => prev + product.calories);
   };
 
-  // ✅ Delete consumed product
+  // 🔹 Delete consumed product
   const deleteProduct = (id, calories) => {
     setConsumedList((prev) => prev.filter((item) => item.id !== id));
     setTotalCalories((prev) => prev - calories);
@@ -101,10 +156,18 @@ export default function BarcodeScannerScreen() {
       {/* Show product info */}
       {product ? (
         <View style={styles.productBox}>
-          <Image source={images[product.image]} style={styles.productImage} />
+          {product.image && !product.image.includes(".png") ? (
+            <Image source={{ uri: product.image }} style={styles.productImage} />
+          ) : (
+            images[product.image] && (
+              <Image source={images[product.image]} style={styles.productImage} />
+            )
+          )}
           <Text style={styles.productName}>{product.name}</Text>
           <Text>Calories: {product.calories}</Text>
           <Text>Protein: {product.protein} g</Text>
+          <Text>Carbs: {product.carbs || 0} g</Text>
+          <Text>Fats: {product.fats || 0} g</Text>
 
           <Button title="Consume" onPress={consumeProduct} />
         </View>
@@ -112,7 +175,7 @@ export default function BarcodeScannerScreen() {
         <Text style={styles.info}>Enter a barcode to find a product</Text>
       )}
 
-      {/* Consumed list (shared with MealLog) */}
+      {/* Consumed list */}
       <View style={styles.listBox}>
         <Text style={styles.subtitle}>🍽️ Consumed Products</Text>
         {consumedList.length === 0 ? (

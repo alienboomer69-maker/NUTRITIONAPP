@@ -9,11 +9,36 @@ import {
   ScrollView,
   ActivityIndicator,
   Dimensions,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Progress from "react-native-progress";
 
 const { width } = Dimensions.get("window");
+
+// 🔹 Mini component for Progress Bar
+const ProgressItem = ({ label, value, goal, unit }) => {
+  const progress = goal > 0 ? Math.min(value / goal, 1) : 0;
+  return (
+    <View style={styles.progressContainer}>
+      <Text style={styles.progressLabel}>
+        {label}: {value}
+        {unit}/{goal}
+        {unit}
+      </Text>
+      <Progress.Bar
+        progress={progress}
+        width={width * 0.8}
+        height={12}
+        color="#6200EE"
+        unfilledColor="#ddd"
+        borderWidth={0}
+        borderRadius={6}
+      />
+    </View>
+  );
+};
 
 const GoalManagementScreen = () => {
   const [goals, setGoals] = useState({
@@ -21,7 +46,7 @@ const GoalManagementScreen = () => {
     proteinGoal: "",
     carbsGoal: "",
     fatsGoal: "",
-    waterGoal: "", // ✅ new
+    waterGoal: "",
   });
 
   const [dailyData, setDailyData] = useState({
@@ -29,25 +54,33 @@ const GoalManagementScreen = () => {
     totalProtein: 0,
     totalCarbs: 0,
     totalFats: 0,
-    totalWater: 0, // ✅ new
+    totalWater: 0,
   });
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
-  // ✅ Load goals + daily meals + water
+  // 🔹 Load data with Promise.all
   useEffect(() => {
     const loadData = async () => {
       try {
-        const savedGoals = await AsyncStorage.getItem("nutritionGoals");
+        const [savedGoals, savedFoods, waterIntake] = await Promise.all([
+          AsyncStorage.getItem("nutritionGoals"),
+          AsyncStorage.getItem("selectedFoods"),
+          AsyncStorage.getItem("waterIntake"),
+        ]);
+
         if (savedGoals) setGoals(JSON.parse(savedGoals));
 
-        const savedFoods = await AsyncStorage.getItem("selectedFoods");
         const meals = savedFoods ? JSON.parse(savedFoods) : [];
-
-        // calculate today's totals
         const today = new Date().toISOString().split("T")[0];
-        let totals = { totalCalories: 0, totalProtein: 0, totalCarbs: 0, totalFats: 0 };
+
+        let totals = {
+          totalCalories: 0,
+          totalProtein: 0,
+          totalCarbs: 0,
+          totalFats: 0,
+        };
 
         meals.forEach((meal) => {
           const mealDate = meal.timestamp?.split("T")[0];
@@ -59,9 +92,10 @@ const GoalManagementScreen = () => {
           }
         });
 
-        const water = parseInt(await AsyncStorage.getItem("waterIntake")) || 0;
-
-        setDailyData({ ...totals, totalWater: water });
+        setDailyData({
+          ...totals,
+          totalWater: parseInt(waterIntake) || 0,
+        });
       } catch (err) {
         console.error("Error loading data:", err);
       } finally {
@@ -72,18 +106,20 @@ const GoalManagementScreen = () => {
     loadData();
   }, []);
 
-  // ✅ Save goals
+  // 🔹 Save goals
   const handleSaveGoals = async () => {
     setSaving(true);
     try {
       const newGoals = {
-        calorieGoal: goals.calorieGoal,
-        proteinGoal: goals.proteinGoal,
-        carbsGoal: goals.carbsGoal,
-        fatsGoal: goals.fatsGoal,
-        waterGoal: goals.waterGoal, // ✅ include water
+        calorieGoal: parseInt(goals.calorieGoal) || 0,
+        proteinGoal: parseInt(goals.proteinGoal) || 0,
+        carbsGoal: parseInt(goals.carbsGoal) || 0,
+        fatsGoal: parseInt(goals.fatsGoal) || 0,
+        waterGoal: parseInt(goals.waterGoal) || 0,
       };
+
       await AsyncStorage.setItem("nutritionGoals", JSON.stringify(newGoals));
+      setGoals(newGoals); // ✅ update state immediately
       Alert.alert("✅ Success", "Your goals have been updated!");
     } catch (err) {
       console.error("Error saving goals:", err);
@@ -101,70 +137,101 @@ const GoalManagementScreen = () => {
     );
   }
 
-  const renderProgress = (label, value, goal, unit = "") => {
-    const progress = goal > 0 ? Math.min(value / goal, 1) : 0;
-    return (
-      <View style={styles.progressContainer}>
-        <Text style={styles.progressLabel}>
-          {label}: {value}
-          {unit}/{goal}
-          {unit}
-        </Text>
-        <Progress.Bar
-          progress={progress}
-          width={width * 0.8}
-          height={12}
-          color="#6200EE"
-          unfilledColor="#ddd"
-          borderWidth={0}
-          borderRadius={6}
-        />
-      </View>
-    );
+  // 🔹 Labels mapping for cleaner UI
+  const goalLabels = {
+    calorieGoal: "Calories (kcal)",
+    proteinGoal: "Protein (g)",
+    carbsGoal: "Carbs (g)",
+    fatsGoal: "Fats (g)",
+    waterGoal: "Water (ml)",
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: 30 }}>
-      <Text style={styles.header}>🎯 Daily Nutrition Goals</Text>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+    >
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 30 }}
+      >
+        <Text style={styles.header}>🎯 Daily Nutrition Goals</Text>
 
-      <View style={styles.card}>
-        {["calorieGoal", "proteinGoal", "carbsGoal", "fatsGoal", "waterGoal"].map((key) => (
-          <View key={key} style={styles.inputContainer}>
-            <Text style={styles.label}>{key.replace("Goal", "")} Goal</Text>
-            <TextInput
-              style={styles.input}
-              keyboardType="numeric"
-              value={goals[key]}
-              placeholder={`Enter ${key.replace("Goal", "")} target`}
-              onChangeText={(text) => setGoals({ ...goals, [key]: text })}
-            />
-          </View>
-        ))}
+        <View style={styles.card}>
+          {Object.keys(goalLabels).map((key) => (
+            <View key={key} style={styles.inputContainer}>
+              <Text style={styles.label}>{goalLabels[key]}</Text>
+              <TextInput
+                style={styles.input}
+                keyboardType="numeric"
+                value={String(goals[key])}
+                placeholder={`Enter ${goalLabels[key]}`}
+                onChangeText={(text) =>
+                  setGoals({ ...goals, [key]: text.replace(/[^0-9]/g, "") })
+                }
+              />
+            </View>
+          ))}
 
-        <TouchableOpacity
-          style={[styles.button, saving && { backgroundColor: "#aaa" }]}
-          onPress={handleSaveGoals}
-          disabled={saving}
-        >
-          {saving ? <ActivityIndicator color="#fff" /> : <Text style={styles.buttonText}>Save Goals</Text>}
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity
+            style={[styles.button, saving && { backgroundColor: "#aaa" }]}
+            onPress={handleSaveGoals}
+            disabled={saving}
+          >
+            {saving ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Text style={styles.buttonText}>Save Goals</Text>
+            )}
+          </TouchableOpacity>
+        </View>
 
-      <Text style={styles.header}>📊 Today's Intake Progress</Text>
-      <View style={styles.card}>
-        {renderProgress("Calories", dailyData.totalCalories, parseInt(goals.calorieGoal) || 0, " kcal")}
-        {renderProgress("Protein", dailyData.totalProtein, parseInt(goals.proteinGoal) || 0, " g")}
-        {renderProgress("Carbs", dailyData.totalCarbs, parseInt(goals.carbsGoal) || 0, " g")}
-        {renderProgress("Fats", dailyData.totalFats, parseInt(goals.fatsGoal) || 0, " g")}
-        {renderProgress("Water", dailyData.totalWater, parseInt(goals.waterGoal) || 0, " ml")}
-      </View>
-    </ScrollView>
+        <Text style={styles.header}>📊 Today's Intake Progress</Text>
+        <View style={styles.card}>
+          <ProgressItem
+            label="Calories"
+            value={dailyData.totalCalories}
+            goal={goals.calorieGoal}
+            unit=" kcal"
+          />
+          <ProgressItem
+            label="Protein"
+            value={dailyData.totalProtein}
+            goal={goals.proteinGoal}
+            unit=" g"
+          />
+          <ProgressItem
+            label="Carbs"
+            value={dailyData.totalCarbs}
+            goal={goals.carbsGoal}
+            unit=" g"
+          />
+          <ProgressItem
+            label="Fats"
+            value={dailyData.totalFats}
+            goal={goals.fatsGoal}
+            unit=" g"
+          />
+          <ProgressItem
+            label="Water"
+            value={dailyData.totalWater}
+            goal={goals.waterGoal}
+            unit=" ml"
+          />
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#F9F9FB", padding: 20 },
-  header: { fontSize: 24, fontWeight: "bold", marginVertical: 10, color: "#222" },
+  header: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginVertical: 10,
+    color: "#222",
+  },
   card: {
     backgroundColor: "#fff",
     borderRadius: 12,
