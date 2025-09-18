@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "217520693624",
+    "project_id": "nuts-28ea8",
+    "storage_bucket": "nuts-28ea8.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:217520693624:android:c859deaf32fb1502ece88d",
+        "android_client_info": {
+          "package_name": "com.nuts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC6HsF3Py9zDLsMF08cpu-hy5FFfli7EvE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

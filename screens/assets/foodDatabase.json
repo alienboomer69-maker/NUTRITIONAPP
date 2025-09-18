@@ -1,0 +1,1566 @@
+[
+  {
+    "id": "1",
+    "name": "Grilled Chicken Breast",
+    "nutrients": {
+      "protein": 31,
+      "carbs": 0,
+      "fats": 3.6,
+      "calories": 165
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "2",
+    "name": "Greek Yogurt",
+    "nutrients": {
+      "protein": 10,
+      "carbs": 5,
+      "fats": 0,
+      "calories": 100
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "3",
+    "name": "Brown Rice",
+    "nutrients": {
+      "protein": 3,
+      "carbs": 45,
+      "fats": 1.5,
+      "calories": 216
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "4",
+    "name": "Oats",
+    "nutrients": {
+      "protein": 5,
+      "carbs": 27,
+      "fats": 2.5,
+      "calories": 150
+    },
+    "helps": [
+      "carbs",
+      "fiber"
+    ]
+  },
+  {
+    "id": "5",
+    "name": "Avocado",
+    "nutrients": {
+      "protein": 2,
+      "carbs": 9,
+      "fats": 15,
+      "calories": 160
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "6",
+    "name": "Almonds",
+    "nutrients": {
+      "protein": 6,
+      "carbs": 6,
+      "fats": 14,
+      "calories": 164
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "7",
+    "name": "Salmon",
+    "nutrients": {
+      "protein": 22,
+      "carbs": 0,
+      "fats": 13,
+      "calories": 208
+    },
+    "helps": [
+      "protein",
+      "fats"
+    ]
+  },
+  {
+    "id": "8",
+    "name": "Banana",
+    "nutrients": {
+      "protein": 1,
+      "carbs": 27,
+      "fats": 0.3,
+      "calories": 105
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "9",
+    "name": "Apple",
+    "nutrients": {
+      "protein": 17.6,
+      "carbs": 30.2,
+      "fats": 4.2,
+      "calories": 145.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "10",
+    "name": "Orange",
+    "nutrients": {
+      "protein": 7.4,
+      "carbs": 42.0,
+      "fats": 10.0,
+      "calories": 356.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "11",
+    "name": "Strawberries",
+    "nutrients": {
+      "protein": 8.1,
+      "carbs": 16.0,
+      "fats": 7.3,
+      "calories": 159.0
+    },
+    "helps": [
+      "carbs",
+      "protein"
+    ]
+  },
+  {
+    "id": "12",
+    "name": "Blueberries",
+    "nutrients": {
+      "protein": 5.2,
+      "carbs": 43.8,
+      "fats": 13.3,
+      "calories": 146.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "13",
+    "name": "Mango",
+    "nutrients": {
+      "protein": 12.6,
+      "carbs": 39.4,
+      "fats": 3.1,
+      "calories": 587.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "14",
+    "name": "Pineapple",
+    "nutrients": {
+      "protein": 4.5,
+      "carbs": 19.6,
+      "fats": 16.8,
+      "calories": 441.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "15",
+    "name": "Watermelon",
+    "nutrients": {
+      "protein": 21.4,
+      "carbs": 21.4,
+      "fats": 18.1,
+      "calories": 317.0
+    },
+    "helps": [
+      "fiber",
+      "protein"
+    ]
+  },
+  {
+    "id": "16",
+    "name": "Papaya",
+    "nutrients": {
+      "protein": 21.6,
+      "carbs": 5.7,
+      "fats": 16.0,
+      "calories": 575.0
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "17",
+    "name": "Eggs",
+    "nutrients": {
+      "protein": 26.8,
+      "carbs": 5.3,
+      "fats": 19.5,
+      "calories": 103.0
+    },
+    "helps": [
+      "carbs",
+      "protein"
+    ]
+  },
+  {
+    "id": "18",
+    "name": "Cheddar Cheese",
+    "nutrients": {
+      "protein": 29.9,
+      "carbs": 16.4,
+      "fats": 1.1,
+      "calories": 516.0
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "19",
+    "name": "Milk",
+    "nutrients": {
+      "protein": 20.2,
+      "carbs": 26.1,
+      "fats": 16.9,
+      "calories": 130.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "20",
+    "name": "Tofu",
+    "nutrients": {
+      "protein": 18.5,
+      "carbs": 48.4,
+      "fats": 7.7,
+      "calories": 431.0
+    },
+    "helps": [
+      "carbs",
+      "fiber"
+    ]
+  },
+  {
+    "id": "21",
+    "name": "Paneer",
+    "nutrients": {
+      "protein": 27.2,
+      "carbs": 18.4,
+      "fats": 12.5,
+      "calories": 465.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "22",
+    "name": "Cottage Cheese",
+    "nutrients": {
+      "protein": 24.4,
+      "carbs": 28.2,
+      "fats": 18.3,
+      "calories": 502.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "23",
+    "name": "Lentils",
+    "nutrients": {
+      "protein": 21.0,
+      "carbs": 27.6,
+      "fats": 16.5,
+      "calories": 241.0
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "24",
+    "name": "Chickpeas",
+    "nutrients": {
+      "protein": 22.3,
+      "carbs": 34.2,
+      "fats": 6.1,
+      "calories": 486.0
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "25",
+    "name": "Black Beans",
+    "nutrients": {
+      "protein": 1.7,
+      "carbs": 12.9,
+      "fats": 13.0,
+      "calories": 212.0
+    },
+    "helps": [
+      "protein",
+      "carbs"
+    ]
+  },
+  {
+    "id": "26",
+    "name": "Kidney Beans",
+    "nutrients": {
+      "protein": 20.2,
+      "carbs": 45.0,
+      "fats": 16.1,
+      "calories": 134.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "27",
+    "name": "Peas",
+    "nutrients": {
+      "protein": 20.3,
+      "carbs": 28.2,
+      "fats": 18.1,
+      "calories": 304.0
+    },
+    "helps": [
+      "fats",
+      "fiber"
+    ]
+  },
+  {
+    "id": "28",
+    "name": "Broccoli",
+    "nutrients": {
+      "protein": 18.0,
+      "carbs": 5.2,
+      "fats": 10.6,
+      "calories": 334.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "29",
+    "name": "Spinach",
+    "nutrients": {
+      "protein": 2.5,
+      "carbs": 58.5,
+      "fats": 10.8,
+      "calories": 272.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "30",
+    "name": "Kale",
+    "nutrients": {
+      "protein": 8.4,
+      "carbs": 45.6,
+      "fats": 18.5,
+      "calories": 196.0
+    },
+    "helps": [
+      "fats",
+      "fiber"
+    ]
+  },
+  {
+    "id": "31",
+    "name": "Carrots",
+    "nutrients": {
+      "protein": 13.2,
+      "carbs": 10.6,
+      "fats": 4.6,
+      "calories": 326.0
+    },
+    "helps": [
+      "protein",
+      "fiber"
+    ]
+  },
+  {
+    "id": "32",
+    "name": "Potatoes",
+    "nutrients": {
+      "protein": 14.8,
+      "carbs": 48.1,
+      "fats": 18.8,
+      "calories": 244.0
+    },
+    "helps": [
+      "carbs",
+      "protein"
+    ]
+  },
+  {
+    "id": "33",
+    "name": "Sweet Potatoes",
+    "nutrients": {
+      "protein": 12.9,
+      "carbs": 22.8,
+      "fats": 2.0,
+      "calories": 426.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "34",
+    "name": "Quinoa",
+    "nutrients": {
+      "protein": 20.7,
+      "carbs": 4.2,
+      "fats": 8.2,
+      "calories": 546.0
+    },
+    "helps": [
+      "protein",
+      "fats"
+    ]
+  },
+  {
+    "id": "35",
+    "name": "Barley",
+    "nutrients": {
+      "protein": 28.4,
+      "carbs": 45.9,
+      "fats": 2.0,
+      "calories": 200.0
+    },
+    "helps": [
+      "fats",
+      "fiber"
+    ]
+  },
+  {
+    "id": "36",
+    "name": "Whole Wheat Bread",
+    "nutrients": {
+      "protein": 21.9,
+      "carbs": 54.4,
+      "fats": 19.5,
+      "calories": 422.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "37",
+    "name": "Pasta",
+    "nutrients": {
+      "protein": 11.0,
+      "carbs": 38.7,
+      "fats": 18.1,
+      "calories": 359.0
+    },
+    "helps": [
+      "fiber",
+      "carbs"
+    ]
+  },
+  {
+    "id": "38",
+    "name": "Popcorn",
+    "nutrients": {
+      "protein": 12.1,
+      "carbs": 12.2,
+      "fats": 15.1,
+      "calories": 141.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "39",
+    "name": "Cashews",
+    "nutrients": {
+      "protein": 10.6,
+      "carbs": 9.9,
+      "fats": 8.6,
+      "calories": 304.0
+    },
+    "helps": [
+      "protein",
+      "fiber"
+    ]
+  },
+  {
+    "id": "40",
+    "name": "Walnuts",
+    "nutrients": {
+      "protein": 11.2,
+      "carbs": 5.1,
+      "fats": 2.5,
+      "calories": 152.0
+    },
+    "helps": [
+      "protein",
+      "fats"
+    ]
+  },
+  {
+    "id": "41",
+    "name": "Peanuts",
+    "nutrients": {
+      "protein": 7.5,
+      "carbs": 24.9,
+      "fats": 12.3,
+      "calories": 457.0
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "42",
+    "name": "Hazelnuts",
+    "nutrients": {
+      "protein": 2.7,
+      "carbs": 12.7,
+      "fats": 17.3,
+      "calories": 265.0
+    },
+    "helps": [
+      "protein",
+      "fiber"
+    ]
+  },
+  {
+    "id": "43",
+    "name": "Sunflower Seeds",
+    "nutrients": {
+      "protein": 24.8,
+      "carbs": 41.8,
+      "fats": 10.9,
+      "calories": 255.0
+    },
+    "helps": [
+      "carbs",
+      "fats"
+    ]
+  },
+  {
+    "id": "44",
+    "name": "Pumpkin Seeds",
+    "nutrients": {
+      "protein": 24.2,
+      "carbs": 39.0,
+      "fats": 19.6,
+      "calories": 165.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "45",
+    "name": "Chia Seeds",
+    "nutrients": {
+      "protein": 29.0,
+      "carbs": 55.3,
+      "fats": 6.3,
+      "calories": 551.0
+    },
+    "helps": [
+      "fiber",
+      "protein"
+    ]
+  },
+  {
+    "id": "46",
+    "name": "Flax Seeds",
+    "nutrients": {
+      "protein": 15.9,
+      "carbs": 24.9,
+      "fats": 16.4,
+      "calories": 386.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "47",
+    "name": "Olive Oil",
+    "nutrients": {
+      "protein": 14.6,
+      "carbs": 11.3,
+      "fats": 1.8,
+      "calories": 169.0
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "48",
+    "name": "Coconut Oil",
+    "nutrients": {
+      "protein": 8.1,
+      "carbs": 32.4,
+      "fats": 2.1,
+      "calories": 225.0
+    },
+    "helps": [
+      "fats",
+      "fiber"
+    ]
+  },
+  {
+    "id": "49",
+    "name": "Butter",
+    "nutrients": {
+      "protein": 14.1,
+      "carbs": 4.4,
+      "fats": 6.4,
+      "calories": 165.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "50",
+    "name": "Chicken Thigh",
+    "nutrients": {
+      "protein": 13.3,
+      "carbs": 8.3,
+      "fats": 3.2,
+      "calories": 397.0
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "51",
+    "name": "Turkey Breast",
+    "nutrients": {
+      "protein": 27.3,
+      "carbs": 58.7,
+      "fats": 7.7,
+      "calories": 265.0
+    },
+    "helps": [
+      "fats",
+      "carbs"
+    ]
+  },
+  {
+    "id": "52",
+    "name": "Beef Steak",
+    "nutrients": {
+      "protein": 7.1,
+      "carbs": 2.2,
+      "fats": 16.6,
+      "calories": 321.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "53",
+    "name": "Pork Chop",
+    "nutrients": {
+      "protein": 27.6,
+      "carbs": 17.8,
+      "fats": 2.4,
+      "calories": 254.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "54",
+    "name": "Shrimp",
+    "nutrients": {
+      "protein": 25.8,
+      "carbs": 53.2,
+      "fats": 17.2,
+      "calories": 474.0
+    },
+    "helps": [
+      "carbs",
+      "fats"
+    ]
+  },
+  {
+    "id": "55",
+    "name": "Tuna",
+    "nutrients": {
+      "protein": 14.2,
+      "carbs": 13.0,
+      "fats": 7.3,
+      "calories": 551.0
+    },
+    "helps": [
+      "fiber",
+      "carbs"
+    ]
+  },
+  {
+    "id": "56",
+    "name": "Sardines",
+    "nutrients": {
+      "protein": 11.3,
+      "carbs": 32.6,
+      "fats": 11.5,
+      "calories": 319.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "57",
+    "name": "Cod",
+    "nutrients": {
+      "protein": 14.6,
+      "carbs": 6.3,
+      "fats": 17.1,
+      "calories": 158.0
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "58",
+    "name": "Trout",
+    "nutrients": {
+      "protein": 27.0,
+      "carbs": 25.6,
+      "fats": 13.8,
+      "calories": 434.0
+    },
+    "helps": [
+      "carbs",
+      "fats"
+    ]
+  },
+  {
+    "id": "59",
+    "name": "Eggplant",
+    "nutrients": {
+      "protein": 15.6,
+      "carbs": 16.1,
+      "fats": 8.0,
+      "calories": 260.0
+    },
+    "helps": [
+      "protein",
+      "fiber"
+    ]
+  },
+  {
+    "id": "60",
+    "name": "Zucchini",
+    "nutrients": {
+      "protein": 6.6,
+      "carbs": 41.3,
+      "fats": 4.2,
+      "calories": 115.0
+    },
+    "helps": [
+      "carbs",
+      "fiber"
+    ]
+  },
+  {
+    "id": "61",
+    "name": "Cucumber",
+    "nutrients": {
+      "protein": 11.9,
+      "carbs": 27.7,
+      "fats": 18.2,
+      "calories": 188.0
+    },
+    "helps": [
+      "fiber",
+      "carbs"
+    ]
+  },
+  {
+    "id": "62",
+    "name": "Tomato",
+    "nutrients": {
+      "protein": 18.9,
+      "carbs": 48.9,
+      "fats": 17.7,
+      "calories": 380.0
+    },
+    "helps": [
+      "fiber",
+      "carbs"
+    ]
+  },
+  {
+    "id": "63",
+    "name": "Onion",
+    "nutrients": {
+      "protein": 5.8,
+      "carbs": 56.8,
+      "fats": 9.8,
+      "calories": 544.0
+    },
+    "helps": [
+      "carbs",
+      "protein"
+    ]
+  },
+  {
+    "id": "64",
+    "name": "Garlic",
+    "nutrients": {
+      "protein": 9.1,
+      "carbs": 39.6,
+      "fats": 17.4,
+      "calories": 269.0
+    },
+    "helps": [
+      "fats",
+      "fiber"
+    ]
+  },
+  {
+    "id": "65",
+    "name": "Bell Pepper",
+    "nutrients": {
+      "protein": 15.0,
+      "carbs": 27.1,
+      "fats": 16.3,
+      "calories": 357.0
+    },
+    "helps": [
+      "carbs",
+      "fiber"
+    ]
+  },
+  {
+    "id": "66",
+    "name": "Mushrooms",
+    "nutrients": {
+      "protein": 21.1,
+      "carbs": 16.3,
+      "fats": 3.8,
+      "calories": 375.0
+    },
+    "helps": [
+      "carbs",
+      "fiber"
+    ]
+  },
+  {
+    "id": "67",
+    "name": "Cauliflower",
+    "nutrients": {
+      "protein": 2.0,
+      "carbs": 52.4,
+      "fats": 1.5,
+      "calories": 379.0
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "68",
+    "name": "Cabbage",
+    "nutrients": {
+      "protein": 12.6,
+      "carbs": 40.2,
+      "fats": 13.5,
+      "calories": 272.0
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "69",
+    "name": "Brussels Sprouts",
+    "nutrients": {
+      "protein": 1.1,
+      "carbs": 49.4,
+      "fats": 7.4,
+      "calories": 158.0
+    },
+    "helps": [
+      "fiber",
+      "carbs"
+    ]
+  },
+  {
+    "id": "70",
+    "name": "Green Beans",
+    "nutrients": {
+      "protein": 26.4,
+      "carbs": 30.3,
+      "fats": 12.8,
+      "calories": 440.0
+    },
+    "helps": [
+      "carbs",
+      "fats"
+    ]
+  },
+  {
+    "id": "71",
+    "name": "Celery",
+    "nutrients": {
+      "protein": 26.5,
+      "carbs": 31.7,
+      "fats": 5.7,
+      "calories": 86.0
+    },
+    "helps": [
+      "fiber",
+      "fats"
+    ]
+  },
+  {
+    "id": "72",
+    "name": "Radish",
+    "nutrients": {
+      "protein": 4.9,
+      "carbs": 25.1,
+      "fats": 15.0,
+      "calories": 419.0
+    },
+    "helps": [
+      "fats",
+      "carbs"
+    ]
+  },
+  {
+    "id": "73",
+    "name": "Turnip",
+    "nutrients": {
+      "protein": 18.3,
+      "carbs": 6.0,
+      "fats": 7.3,
+      "calories": 171.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "74",
+    "name": "Beetroot",
+    "nutrients": {
+      "protein": 5.3,
+      "carbs": 53.1,
+      "fats": 14.7,
+      "calories": 465.0
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "75",
+    "name": "Pear",
+    "nutrients": {
+      "protein": 5.3,
+      "carbs": 55.8,
+      "fats": 11.0,
+      "calories": 506.0
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "76",
+    "name": "Plum",
+    "nutrients": {
+      "protein": 1.2,
+      "carbs": 45.3,
+      "fats": 13.4,
+      "calories": 222.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "77",
+    "name": "Peach",
+    "nutrients": {
+      "protein": 23.0,
+      "carbs": 28.2,
+      "fats": 0.1,
+      "calories": 108.0
+    },
+    "helps": [
+      "fiber",
+      "carbs"
+    ]
+  },
+  {
+    "id": "78",
+    "name": "Apricot",
+    "nutrients": {
+      "protein": 14.7,
+      "carbs": 47.5,
+      "fats": 12.2,
+      "calories": 562.0
+    },
+    "helps": [
+      "fats",
+      "fiber"
+    ]
+  },
+  {
+    "id": "79",
+    "name": "Kiwi",
+    "nutrients": {
+      "protein": 21.1,
+      "carbs": 35.3,
+      "fats": 7.7,
+      "calories": 304.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "80",
+    "name": "Guava",
+    "nutrients": {
+      "protein": 2.0,
+      "carbs": 30.6,
+      "fats": 1.2,
+      "calories": 539.0
+    },
+    "helps": [
+      "fiber",
+      "fats"
+    ]
+  },
+  {
+    "id": "81",
+    "name": "Dates",
+    "nutrients": {
+      "protein": 1.5,
+      "carbs": 46.7,
+      "fats": 13.6,
+      "calories": 334.0
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "82",
+    "name": "Figs",
+    "nutrients": {
+      "protein": 8.8,
+      "carbs": 26.4,
+      "fats": 4.3,
+      "calories": 299.0
+    },
+    "helps": [
+      "protein",
+      "fats"
+    ]
+  },
+  {
+    "id": "83",
+    "name": "Raisins",
+    "nutrients": {
+      "protein": 27.8,
+      "carbs": 48.3,
+      "fats": 18.9,
+      "calories": 441.0
+    },
+    "helps": [
+      "fiber",
+      "carbs"
+    ]
+  },
+  {
+    "id": "84",
+    "name": "Prunes",
+    "nutrients": {
+      "protein": 16.6,
+      "carbs": 52.7,
+      "fats": 2.9,
+      "calories": 515.0
+    },
+    "helps": [
+      "fiber",
+      "fats"
+    ]
+  },
+  {
+    "id": "85",
+    "name": "Corn",
+    "nutrients": {
+      "protein": 9.8,
+      "carbs": 3.1,
+      "fats": 11.4,
+      "calories": 125.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "86",
+    "name": "Rice Cakes",
+    "nutrients": {
+      "protein": 24.7,
+      "carbs": 21.8,
+      "fats": 11.8,
+      "calories": 232.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "87",
+    "name": "Granola",
+    "nutrients": {
+      "protein": 24.9,
+      "carbs": 19.2,
+      "fats": 16.8,
+      "calories": 416.0
+    },
+    "helps": [
+      "protein",
+      "fiber"
+    ]
+  },
+  {
+    "id": "88",
+    "name": "Trail Mix",
+    "nutrients": {
+      "protein": 18.7,
+      "carbs": 31.1,
+      "fats": 0.8,
+      "calories": 506.0
+    },
+    "helps": [
+      "fiber",
+      "carbs"
+    ]
+  },
+  {
+    "id": "89",
+    "name": "Dark Chocolate",
+    "nutrients": {
+      "protein": 21.5,
+      "carbs": 40.9,
+      "fats": 18.1,
+      "calories": 106.0
+    },
+    "helps": [
+      "protein"
+    ]
+  },
+  {
+    "id": "90",
+    "name": "Ice Cream",
+    "nutrients": {
+      "protein": 26.5,
+      "carbs": 45.9,
+      "fats": 2.1,
+      "calories": 268.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "91",
+    "name": "French Fries",
+    "nutrients": {
+      "protein": 18.2,
+      "carbs": 57.5,
+      "fats": 14.3,
+      "calories": 305.0
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "92",
+    "name": "Burger Patty",
+    "nutrients": {
+      "protein": 4.5,
+      "carbs": 36.3,
+      "fats": 16.4,
+      "calories": 141.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "93",
+    "name": "Hot Dog",
+    "nutrients": {
+      "protein": 16.7,
+      "carbs": 5.6,
+      "fats": 5.9,
+      "calories": 121.0
+    },
+    "helps": [
+      "protein",
+      "carbs"
+    ]
+  },
+  {
+    "id": "94",
+    "name": "Pizza Slice",
+    "nutrients": {
+      "protein": 21.5,
+      "carbs": 30.1,
+      "fats": 6.6,
+      "calories": 291.0
+    },
+    "helps": [
+      "fiber",
+      "fats"
+    ]
+  },
+  {
+    "id": "95",
+    "name": "Pancakes",
+    "nutrients": {
+      "protein": 1.1,
+      "carbs": 18.5,
+      "fats": 9.3,
+      "calories": 598.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "96",
+    "name": "Waffles",
+    "nutrients": {
+      "protein": 24.9,
+      "carbs": 19.2,
+      "fats": 16.0,
+      "calories": 240.0
+    },
+    "helps": [
+      "fats",
+      "carbs"
+    ]
+  },
+  {
+    "id": "97",
+    "name": "Bagel",
+    "nutrients": {
+      "protein": 13.3,
+      "carbs": 17.8,
+      "fats": 7.3,
+      "calories": 410.0
+    },
+    "helps": [
+      "protein",
+      "fats"
+    ]
+  },
+  {
+    "id": "98",
+    "name": "Croissant",
+    "nutrients": {
+      "protein": 28.6,
+      "carbs": 8.2,
+      "fats": 8.7,
+      "calories": 153.0
+    },
+    "helps": [
+      "fats",
+      "protein"
+    ]
+  },
+  {
+    "id": "99",
+    "name": "Donut",
+    "nutrients": {
+      "protein": 28.7,
+      "carbs": 45.9,
+      "fats": 3.0,
+      "calories": 90.0
+    },
+    "helps": [
+      "fiber",
+      "fats"
+    ]
+  },
+  {
+    "id": "100",
+    "name": "Biryani",
+    "nutrients": {
+      "protein": 19.7,
+      "carbs": 47.9,
+      "fats": 4.3,
+      "calories": 160.0
+    },
+    "helps": [
+      "carbs"
+    ]
+  },
+  {
+    "id": "101",
+    "name": "Samosa",
+    "nutrients": {
+      "protein": 9.4,
+      "carbs": 9.8,
+      "fats": 14.3,
+      "calories": 276.0
+    },
+    "helps": [
+      "carbs",
+      "fats"
+    ]
+  },
+  {
+    "id": "102",
+    "name": "Pakora",
+    "nutrients": {
+      "protein": 20.6,
+      "carbs": 46.7,
+      "fats": 2.3,
+      "calories": 551.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "103",
+    "name": "Idli",
+    "nutrients": {
+      "protein": 4.1,
+      "carbs": 20.5,
+      "fats": 14.8,
+      "calories": 405.0
+    },
+    "helps": [
+      "protein",
+      "fiber"
+    ]
+  },
+  {
+    "id": "104",
+    "name": "Dosa",
+    "nutrients": {
+      "protein": 17.3,
+      "carbs": 44.8,
+      "fats": 19.3,
+      "calories": 513.0
+    },
+    "helps": [
+      "fats",
+      "carbs"
+    ]
+  },
+  {
+    "id": "105",
+    "name": "Chapati",
+    "nutrients": {
+      "protein": 19.0,
+      "carbs": 15.2,
+      "fats": 12.8,
+      "calories": 363.0
+    },
+    "helps": [
+      "fiber"
+    ]
+  },
+  {
+    "id": "106",
+    "name": "Paratha",
+    "nutrients": {
+      "protein": 5.3,
+      "carbs": 19.2,
+      "fats": 18.6,
+      "calories": 328.0
+    },
+    "helps": [
+      "carbs",
+      "fats"
+    ]
+  },
+  {
+    "id": "107",
+    "name": "Upma",
+    "nutrients": {
+      "protein": 11.2,
+      "carbs": 54.8,
+      "fats": 11.0,
+      "calories": 286.0
+    },
+    "helps": [
+      "fats",
+      "fiber"
+    ]
+  },
+  {
+    "id": "108",
+    "name": "Poha",
+    "nutrients": {
+      "protein": 21.4,
+      "carbs": 31.7,
+      "fats": 5.3,
+      "calories": 360.0
+    },
+    "helps": [
+      "protein",
+      "fiber"
+    ]
+  },
+  {
+    "id": "109",
+    "name": "Khichdi",
+    "nutrients": {
+      "protein": 26.5,
+      "carbs": 47.2,
+      "fats": 9.6,
+      "calories": 249.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "110",
+    "name": "Dal",
+    "nutrients": {
+      "protein": 21.9,
+      "carbs": 52.6,
+      "fats": 8.0,
+      "calories": 243.0
+    },
+    "helps": [
+      "fats"
+    ]
+  },
+  {
+    "id": "111",
+    "name": "Rajma Curry",
+    "nutrients": {
+      "protein": 19.9,
+      "carbs": 54.8,
+      "fats": 11.5,
+      "calories": 62.0
+    },
+    "helps": [
+      "fiber",
+      "protein"
+    ]
+  },
+  {
+    "id": "112",
+    "name": "Chole",
+    "nutrients": {
+      "protein": 4.0,
+      "carbs": 25.0,
+      "fats": 0.8,
+      "calories": 353.0
+    },
+    "helps": [
+      "carbs",
+      "fats"
+    ]
+  },
+  {
+    "id": "113",
+    "name": "Palak Paneer",
+    "nutrients": {
+      "protein": 25.9,
+      "carbs": 35.7,
+      "fats": 2.9,
+      "calories": 314.0
+    },
+    "helps": [
+      "fiber",
+      "protein"
+    ]
+  },
+  {
+    "id": "114",
+    "name": "Butter Chicken",
+    "nutrients": {
+      "protein": 9.5,
+      "carbs": 28.7,
+      "fats": 7.4,
+      "calories": 154.0
+    },
+    "helps": [
+      "protein",
+      "fiber"
+    ]
+  },
+  {
+    "id": "115",
+    "name": "Fish Curry",
+    "nutrients": {
+      "protein": 7.2,
+      "carbs": 2.2,
+      "fats": 13.8,
+      "calories": 126.0
+    },
+    "helps": [
+      "fats",
+      "carbs"
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "code": "8901262021001",
+    "name": "Amul Taaza Toned Milk (1L)",
+    "calories": 150,
+    "protein": 6,
+    "image": "amul_milk.png"
+  },
+  {
+    "code": "8901262010012",
+    "name": "Amul Butter (500g)",
+    "calories": 720,
+    "protein": 1,
+    "image": "parle_g.png"
+  }
+]

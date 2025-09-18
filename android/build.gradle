@@ -1,0 +1,38 @@
+buildscript {
+    ext {
+        buildToolsVersion = "35.0.0"
+        minSdkVersion = 24
+        compileSdkVersion = 35
+        targetSdkVersion = 35
+        ndkVersion = "27.1.12297006"
+        kotlinVersion = "1.9.22" // ✅ Stable Kotlin
+    }
+
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // ✅ Optional legacy support
+        maven { url "https://maven.google.com" } // ✅ Optional fallback
+        maven { url "https://jitpack.io" }       // ✅ Optional fallback
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.4.1")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.22") // ✅ Match kotlinVersion
+        classpath("com.google.gms:google-services:4.3.15") // ✅ Firebase
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven { url "https://maven.google.com" }
+        maven { url "https://jitpack.io" }
+    }
+}
+
+// Apply React Native plugin at root
+apply plugin: "com.facebook.react.rootproject"
