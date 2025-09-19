@@ -7,13 +7,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { 
   clearAllNotifications, 
   scheduleDailyNotification, 
-  scheduleIntervalNotification 
+  scheduleIntervalNotification, 
+  sendTestNotification 
 } from "../utils/notificationService";
-import { requestNotificationPermissions } from "../utils/permission"; // ✅ import helper
 
 export default function NotificationSettingsScreen() {
   const [mealReminders, setMealReminders] = useState(true);
-  const [waterInterval, setWaterInterval] = useState(120); // minutes
+  const [waterInterval, setWaterInterval] = useState(120);
   const [activityInterval, setActivityInterval] = useState(180);
   const [quietHours, setQuietHours] = useState({ start: "22:00", end: "07:00" });
   const [motivationalTips, setMotivationalTips] = useState(true);
@@ -33,12 +33,9 @@ export default function NotificationSettingsScreen() {
     })();
   }, []);
 
-  // 🔹 Save + schedule
+  // 🔹 Save & schedule notifications
   const saveSettings = async () => {
     try {
-      // ✅ Ask for permissions before scheduling
-      await requestNotificationPermissions();
-
       const settings = { 
         mealReminders, waterInterval, activityInterval, 
         quietHours, motivationalTips 
@@ -65,7 +62,7 @@ export default function NotificationSettingsScreen() {
       Alert.alert("✅ Saved", "Your reminders have been scheduled!");
     } catch (err) {
       console.error("Error scheduling notifications:", err);
-      Alert.alert("Error", "Could not schedule reminders. Check permissions.");
+      Alert.alert("Error", "Could not schedule reminders.");
     }
   };
 
@@ -117,8 +114,17 @@ export default function NotificationSettingsScreen() {
         <Switch value={motivationalTips} onValueChange={setMotivationalTips} />
       </View>
 
+      {/* ✅ Save Button */}
       <TouchableOpacity style={styles.saveButton} onPress={saveSettings}>
         <Text style={styles.saveButtonText}>Save & Schedule</Text>
+      </TouchableOpacity>
+
+      {/* ✅ Test Button */}
+      <TouchableOpacity 
+        style={[styles.saveButton, { backgroundColor: "#2196F3" }]} 
+        onPress={sendTestNotification}
+      >
+        <Text style={styles.saveButtonText}>Send Test Notification</Text>
       </TouchableOpacity>
     </ScrollView>
   );

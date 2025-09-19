@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { launchImageLibrary } from "react-native-image-picker";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function ProfileScreen({ navigation }) {
   const [name, setName] = useState("");
@@ -82,12 +83,13 @@ export default function ProfileScreen({ navigation }) {
 
       {/* Avatar */}
       <TouchableOpacity onPress={pickImage} style={styles.avatarContainer}>
-        <Image
-          source={
-            photoURL ? { uri: photoURL } : require("./assets/profile.jpg")
-          }
-          style={styles.avatar}
-        />
+        {photoURL ? (
+          <Image source={{ uri: photoURL }} style={styles.avatar} />
+        ) : (
+          <View style={styles.avatarPlaceholder}>
+            <Icon name="account-circle" size={80} color="#6A11CB" />
+          </View>
+        )}
         <Text style={styles.changePhoto}>Change Photo</Text>
       </TouchableOpacity>
 
@@ -173,7 +175,20 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: { color: "#FFF", textAlign: "center", fontWeight: "bold" },
+
+  // Avatar
   avatarContainer: { alignItems: "center", marginBottom: 20 },
   avatar: { width: 100, height: 100, borderRadius: 50, marginBottom: 8 },
+  avatarPlaceholder: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 8,
+    backgroundColor: "#FFF",
+    borderWidth: 2,
+    borderColor: "#DDD",
+    justifyContent: "center",
+    alignItems: "center",
+  },
   changePhoto: { color: "#4CAF50", fontWeight: "600" },
 });

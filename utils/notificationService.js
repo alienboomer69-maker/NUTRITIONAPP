@@ -1,29 +1,72 @@
-import { PermissionsAndroid, Platform, Linking } from "react-native";
+import PushNotification from "react-native-push-notification";
 
-/**
- * Request Notification + Exact Alarm permissions
- */
-export async function requestNotificationPermissions() {
-  try {
-    // 🔔 Android 13+ requires POST_NOTIFICATIONS
-    if (Platform.OS === "android" && Platform.Version >= 33) {
-      const result = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS
-      );
+// ✅ Create notification channel at startup
+PushNotification.createChannel(
+  {
+    channelId: "default-channel-id", 
+    channelName: "Default Channel", 
+    channelDescription: "General notifications",
+    soundName: "default",
+    importance: 4,
+    vibrate: true,
+  },
+  (created) => console.log(`Notification channel created: ${created}`)
+);
 
-      if (result !== PermissionsAndroid.RESULTS.GRANTED) {
-        console.warn("POST_NOTIFICATIONS not granted");
-      }
-    }
+// 🔹 Clear all notifications
+export const clearAllNotifications = () => {
+  PushNotification.cancelAllLocalNotifications();
+};
 
-    // ⏰ Android 12+ requires SCHEDULE_EXACT_ALARM (but user must allow it in Settings)
-    if (Platform.OS === "android" && Platform.Version >= 31) {
-      // We can't request this like a normal runtime permission,
-      // so we must send user to the system settings page
-      await Linking.openSettings(); 
-      // This opens app settings → user must enable "Alarms & reminders"
-    }
-  } catch (err) {
-    console.error("Permission error:", err);
+// 🔹 Schedule daily notification
+export const scheduleDailyNotification = (id, message, hour, minute) => {
+  PushNotification.localNotificationSchedule({
+    channelId: "default-channel-id",
+    id: id.toString(),
+    title: "Reminder",
+    message: message,
+    date: getNextTriggerDate(hour, minute),
+    repeatType: "day",
+    allowWhileIdle: true,
+  });
+};
+
+// 🔹 Schedule interval notification
+export const scheduleIntervalNotification = (id, message, minutes) => {
+  PushNotification.localNotificationSchedule({
+    channelId: "default-channel-id",
+    id: id.toString(),
+    title: "Reminder",
+    message: message,
+    date: new Date(Date.now() + minutes * 60 * 1000),
+    repeatType: "time",
+    repeatTime: minutes * 60 * 1000,
+    allowWhileIdle: true,
+  });
+};
+
+// 🔹 Helper function
+function getNextTriggerDate(hour, minute) {
+  const now = new Date();
+  const trigger = new Date();
+  trigger.setHours(hour);
+  trigger.setMinutes(minute);
+  trigger.setSeconds(0);
+  if (trigger <= now) {
+    trigger.setDate(trigger.getDate() + 1);
   }
+  return trigger;
 }
+
+// 🔹 Instant test notification
+export const sendTestNotification = () => {
+  PushNotification.localNotification({
+    channelId: "default-channel-id",
+    title: "🔔 Test Notification",
+    message: "If you see this, notifications are working!",
+    playSound: true,
+    soundName: "default",
+    importance: 4,
+    vibrate: true,
+  });
+};
