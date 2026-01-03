@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { 
-  View, Text, Switch, TouchableOpacity, StyleSheet, 
-  TextInput, ScrollView, Alert 
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Switch,
+  TouchableOpacity,
+  StyleSheet,
+  TextInput,
+  ScrollView,
+  Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { 
-  clearAllNotifications, 
-  scheduleDailyNotification, 
-  scheduleIntervalNotification, 
-  sendTestNotification 
+import {
+  clearAllNotifications,
+  scheduleDailyNotification,
+  scheduleIntervalNotification,
+  sendTestNotification,
 } from "../utils/notificationService";
 
 export default function NotificationSettingsScreen() {
   const [mealReminders, setMealReminders] = useState(true);
-  const [waterInterval, setWaterInterval] = useState(120);
-  const [activityInterval, setActivityInterval] = useState(180);
-  const [quietHours, setQuietHours] = useState({ start: "22:00", end: "07:00" });
+  const [waterInterval, setWaterInterval] = useState("120");
+  const [activityInterval, setActivityInterval] = useState("180");
   const [motivationalTips, setMotivationalTips] = useState(true);
 
   // 🔹 Load saved settings
@@ -25,44 +30,92 @@ export default function NotificationSettingsScreen() {
       if (saved) {
         const s = JSON.parse(saved);
         setMealReminders(s.mealReminders);
-        setWaterInterval(s.waterInterval);
-        setActivityInterval(s.activityInterval);
-        setQuietHours(s.quietHours);
+        setWaterInterval(String(s.waterInterval));
+        setActivityInterval(String(s.activityInterval));
         setMotivationalTips(s.motivationalTips);
       }
     })();
   }, []);
 
-  // 🔹 Save & schedule notifications
+  // 🔹 Save & schedule
   const saveSettings = async () => {
     try {
-      const settings = { 
-        mealReminders, waterInterval, activityInterval, 
-        quietHours, motivationalTips 
+      const settings = {
+        mealReminders,
+        waterInterval: Number(waterInterval),
+        activityInterval: Number(activityInterval),
+        motivationalTips,
       };
-      await AsyncStorage.setItem("reminderSettings", JSON.stringify(settings));
 
-      clearAllNotifications();
+      await AsyncStorage.setItem(
+        "reminderSettings",
+        JSON.stringify(settings)
+      );
+
+      await clearAllNotifications();
 
       if (mealReminders) {
-        scheduleDailyNotification(1, "🍳 Time for Breakfast!", 9, 0);
-        scheduleDailyNotification(2, "🥗 Time for Lunch!", 13, 0);
-        scheduleDailyNotification(3, "🍲 Time for Dinner!", 20, 0);
-      }
-      if (waterInterval > 0) {
-        scheduleIntervalNotification(4, "💧 Drink some water!", waterInterval);
-      }
-      if (activityInterval > 0) {
-        scheduleIntervalNotification(5, "🏃 Take a quick activity break!", activityInterval);
-      }
-      if (motivationalTips) {
-        scheduleDailyNotification(6, "💡 Remember: Protein builds strength 💪", 8, 0);
+        await scheduleDailyNotification(
+          1,
+          "🍳 Breakfast Time",
+          "Log your breakfast",
+          9,
+          0,
+          "MealLogScreen"
+        );
+        await scheduleDailyNotification(
+          2,
+          "🥗 Lunch Time",
+          "Log your lunch",
+          13,
+          0,
+          "MealLogScreen"
+        );
+        await scheduleDailyNotification(
+          3,
+          "🍲 Dinner Time",
+          "Log your dinner",
+          20,
+          0,
+          "MealLogScreen"
+        );
       }
 
-      Alert.alert("✅ Saved", "Your reminders have been scheduled!");
+      if (Number(waterInterval) >= 15) {
+        await scheduleIntervalNotification(
+          4,
+          "💧 Drink Water",
+          "Time to hydrate",
+          Number(waterInterval),
+          "HomeScreen"
+        );
+      }
+
+      if (Number(activityInterval) >= 15) {
+        await scheduleIntervalNotification(
+          5,
+          "🏃 Activity Break",
+          "Time to move your body",
+          Number(activityInterval),
+          "HomeScreen"
+        );
+      }
+
+      if (motivationalTips) {
+        await scheduleDailyNotification(
+          6,
+          "💡 Nutrition Tip",
+          "Protein helps muscle recovery 💪",
+          8,
+          0,
+          "HomeScreen"
+        );
+      }
+
+      Alert.alert("✅ Saved", "Notifications scheduled successfully!");
     } catch (err) {
-      console.error("Error scheduling notifications:", err);
-      Alert.alert("Error", "Could not schedule reminders.");
+      console.error(err);
+      Alert.alert("Error", "Failed to schedule notifications");
     }
   };
 
@@ -76,55 +129,42 @@ export default function NotificationSettingsScreen() {
       </View>
 
       <View style={styles.row}>
-        <Text>Water Reminder Interval (minutes)</Text>
-        <TextInput 
-          style={styles.input} 
-          keyboardType="numeric" 
-          value={waterInterval.toString()} 
-          onChangeText={(t) => setWaterInterval(Number(t))} 
+        <Text>Water Interval (minutes)</Text>
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          value={waterInterval}
+          onChangeText={setWaterInterval}
         />
       </View>
 
       <View style={styles.row}>
-        <Text>Activity Reminder Interval (minutes)</Text>
-        <TextInput 
-          style={styles.input} 
-          keyboardType="numeric" 
-          value={activityInterval.toString()} 
-          onChangeText={(t) => setActivityInterval(Number(t))} 
-        />
-      </View>
-
-      <View style={styles.row}>
-        <Text>Quiet Hours (start-end)</Text>
-        <TextInput 
-          style={styles.input} 
-          value={quietHours.start} 
-          onChangeText={(t) => setQuietHours({ ...quietHours, start: t })} 
-        />
-        <TextInput 
-          style={styles.input} 
-          value={quietHours.end} 
-          onChangeText={(t) => setQuietHours({ ...quietHours, end: t })} 
+        <Text>Activity Interval (minutes)</Text>
+        <TextInput
+          style={styles.input}
+          keyboardType="numeric"
+          value={activityInterval}
+          onChangeText={setActivityInterval}
         />
       </View>
 
       <View style={styles.row}>
         <Text>Motivational Tips</Text>
-        <Switch value={motivationalTips} onValueChange={setMotivationalTips} />
+        <Switch
+          value={motivationalTips}
+          onValueChange={setMotivationalTips}
+        />
       </View>
 
-      {/* ✅ Save Button */}
       <TouchableOpacity style={styles.saveButton} onPress={saveSettings}>
-        <Text style={styles.saveButtonText}>Save & Schedule</Text>
+        <Text style={styles.saveText}>Save & Schedule</Text>
       </TouchableOpacity>
 
-      {/* ✅ Test Button */}
-      <TouchableOpacity 
-        style={[styles.saveButton, { backgroundColor: "#2196F3" }]} 
+      <TouchableOpacity
+        style={[styles.saveButton, { backgroundColor: "#2196F3" }]}
         onPress={sendTestNotification}
       >
-        <Text style={styles.saveButtonText}>Send Test Notification</Text>
+        <Text style={styles.saveText}>Send Test Notification</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -132,27 +172,34 @@ export default function NotificationSettingsScreen() {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
-  header: { fontSize: 22, fontWeight: "bold", marginBottom: 20 },
-  row: { 
-    flexDirection: "row", 
-    alignItems: "center", 
-    marginBottom: 15, 
-    justifyContent: "space-between" 
+  header: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 20,
   },
-  input: { 
-    borderWidth: 1, 
-    borderColor: "#ccc", 
-    padding: 8, 
-    width: 80, 
-    borderRadius: 8, 
-    textAlign: "center" 
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
   },
-  saveButton: { 
-    backgroundColor: "#4CAF50", 
-    padding: 15, 
-    borderRadius: 10, 
-    alignItems: "center", 
-    marginTop: 20 
+  input: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    padding: 8,
+    width: 80,
+    borderRadius: 8,
+    textAlign: "center",
   },
-  saveButtonText: { color: "#fff", fontWeight: "bold" },
+  saveButton: {
+    backgroundColor: "#4CAF50",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+    marginTop: 20,
+  },
+  saveText: {
+    color: "#fff",
+    fontWeight: "bold",
+  },
 });

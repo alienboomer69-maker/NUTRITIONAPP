@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import {
   View,
   Text,
@@ -14,7 +14,15 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { debounce } from "lodash";
 
-const API_KEY = "R3WlCdFGpzJITKCmtYa94XHxtDZH7OtHqLnL67Tf"; // USDA API Key
+// USDA Nutrient IDs for clarity and robustness
+const NUTRIENT_IDS = {
+  CALORIES: 1008,
+  PROTEIN: 1003,
+  CARBS: 1005,
+  FATS: 1004,
+};
+
+const API_KEY = "J7tDs0cUGkWOtNmOKtNLYIewxQOnOmYDhvf8R3hy"; // USDA API Key
 const SEARCH_URL = "https://api.nal.usda.gov/fdc/v1/foods/search";
 const DETAILS_URL = "https://api.nal.usda.gov/fdc/v1/food";
 
@@ -45,7 +53,7 @@ export default function MealLogScreen() {
   const [recipeName, setRecipeName] = useState("");
   const [loadRecipeModal, setLoadRecipeModal] = useState(false);
 
-  // 🔹 Load saved data
+  // 🔹 Load saved data on mount
   useEffect(() => {
     const load = async () => {
       try {
@@ -65,21 +73,22 @@ export default function MealLogScreen() {
     load();
   }, []);
 
-  // 🔹 Save when state changes
+  // 🔹 Combined Save when state changes
   useEffect(() => {
-    AsyncStorage.setItem("selectedFoods", JSON.stringify(selectedFoods));
-  }, [selectedFoods]);
-  useEffect(() => {
-    AsyncStorage.setItem("waterIntake", waterIntake.toString());
-  }, [waterIntake]);
-  useEffect(() => {
-    AsyncStorage.setItem("supplements", JSON.stringify(supplements));
-  }, [supplements]);
-  useEffect(() => {
-    AsyncStorage.setItem("savedRecipes", JSON.stringify(recipes));
-  }, [recipes]);
+    const saveAll = async () => {
+      try {
+        await AsyncStorage.setItem("selectedFoods", JSON.stringify(selectedFoods));
+        await AsyncStorage.setItem("waterIntake", waterIntake.toString());
+        await AsyncStorage.setItem("supplements", JSON.stringify(supplements));
+        await AsyncStorage.setItem("savedRecipes", JSON.stringify(recipes));
+      } catch (e) {
+        console.error("Error saving data:", e);
+      }
+    };
+    saveAll();
+  }, [selectedFoods, waterIntake, supplements, recipes]);
 
-  // 🔍 Search USDA API
+  // 🔍 Search USDA API with Debounce
   const debouncedSearch = useCallback(
     debounce(async (text) => {
       if (!text) return setResults([]);
@@ -128,11 +137,12 @@ export default function MealLogScreen() {
       return;
     }
     const getNutrient = (id) => foodDetails.foodNutrients.find((n) => n.nutrient.id === id)?.amount || 0;
+    
     setCalculated({
-      calories: ((getNutrient(1008) / 100) * grams).toFixed(1),
-      protein: ((getNutrient(1003) / 100) * grams).toFixed(1),
-      carbs: ((getNutrient(1005) / 100) * grams).toFixed(1),
-      fats: ((getNutrient(1004) / 100) * grams).toFixed(1),
+      calories: ((getNutrient(NUTRIENT_IDS.CALORIES) / 100) * grams).toFixed(1),
+      protein: ((getNutrient(NUTRIENT_IDS.PROTEIN) / 100) * grams).toFixed(1),
+      carbs: ((getNutrient(NUTRIENT_IDS.CARBS) / 100) * grams).toFixed(1),
+      fats: ((getNutrient(NUTRIENT_IDS.FATS) / 100) * grams).toFixed(1),
     });
   };
 
@@ -164,11 +174,11 @@ export default function MealLogScreen() {
     const newFood = {
       id: Date.now().toString(),
       name: customFood.name,
-      calories: parseFloat(customFood.calories),
+      calories: parseFloat(customFood.calories).toFixed(1), // Ensure calories are formatted
       protein: 0,
       carbs: 0,
       fats: 0,
-      quantity: "custom",
+      quantity: "custom", // Marker for custom food
       timestamp: new Date().toISOString(),
     };
     setSelectedFoods((prev) => [...prev, newFood]);
@@ -196,13 +206,15 @@ export default function MealLogScreen() {
     Alert.alert("Recipe Loaded", `Successfully loaded ${r.name}.`);
   };
 
-  const handleAddWater = (ml) => setWaterIntake((prev) => prev + ml);
   const handleAddSupplement = (name) => {
     setSupplements((prev) => [...prev, { name, time: new Date().toLocaleTimeString() }]);
     Alert.alert("Supplement Logged", `Logged ${name}.`);
   };
 
-  const totalCalories = selectedFoods.reduce((a, f) => a + parseFloat(f.calories || 0), 0).toFixed(1);
+  // 🔹 Memoize total calories calculation for performance
+  const totalCalories = useMemo(() => {
+    return selectedFoods.reduce((a, f) => a + parseFloat(f.calories || 0), 0).toFixed(1);
+  }, [selectedFoods]);
 
   return (
     <ScrollView style={styles.container}>
@@ -269,7 +281,9 @@ export default function MealLogScreen() {
                 <View style={{ flex: 1, marginRight: 10 }}>
                   <Text style={styles.logItemName}>{item.name}</Text>
                   <Text style={styles.logItemDetails}>
-                    {item.calories} kcal • {item.quantity}g
+                    {item.calories} kcal
+                    {/* 👇 CORRECTED: Only show grams if it is NOT a custom food (quantity is 'custom') */}
+                    {item.quantity !== 'custom' && ` • ${item.quantity}g`} 
                   </Text>
                 </View>
                 <TouchableOpacity onPress={() => setSelectedFoods((prev) => prev.filter((x) => x.id !== item.id))}>

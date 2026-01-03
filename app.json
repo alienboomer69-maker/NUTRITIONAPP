@@ -1,4 +1,13 @@
 {
   "name": "Nuts",
-  "displayName": "Nuts"
+  "displayName": "Nuts",
+  "plugins": [
+    "expo-barcode-scanner"
+  ],
+  "android": {
+    "permissions": [
+      "android.permission.CAMERA"
+    ],
+    "package": "com.anonymous.nuts"
+  }
 }

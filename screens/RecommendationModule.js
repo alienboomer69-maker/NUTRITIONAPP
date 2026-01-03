@@ -13,112 +13,157 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import foodDatabase from "./assets/foodDatabase.json";
 
-
-
-
-
-// WHO & CDC Guidelines
+/* ------------------ Nutrition Guidelines ------------------ */
 const GUIDELINES = {
-  calories: { min: 1800, max: 2400 },
-  protein: { min: 50, max: 70 },
-  carbs: { min: 225, max: 325 },
-  fats: { min: 44, max: 78 },
+  calories: { min: 1800 },
+  protein: { min: 50 },
+  carbs: { min: 225 },
+  fats: { min: 44 },
 };
 
-// Food recommendation database
+/* ------------------ Utility helpers ------------------ */
+const clamp = (v, min = 0, max = 1) => Math.min(max, Math.max(min, v));
 
 export default function RecommendationModule() {
   const [loading, setLoading] = useState(true);
-  const [underConsumed, setUnderConsumed] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
-  const [consumedRecs, setConsumedRecs] = useState({});
+  const [deficits, setDeficits] = useState({});
+  const [history, setHistory] = useState({});
 
   useEffect(() => {
-    const fetchRecommendations = async () => {
-      try {
-        const savedFoods = await AsyncStorage.getItem("selectedFoods");
-        const meals = savedFoods ? JSON.parse(savedFoods) : [];
-
-        const savedRecs = await AsyncStorage.getItem("consumedRecommendations");
-        const consumed = savedRecs ? JSON.parse(savedRecs) : {};
-        setConsumedRecs(consumed);
-
-        // Aggregate last 7 days intake
-        const sevenDaysAgo = new Date();
-        sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
-
-        let totals = { calories: 0, protein: 0, carbs: 0, fats: 0 };
-        let count = 0;
-
-        meals.forEach((meal) => {
-          const ts = new Date(meal.timestamp);
-          if (ts >= sevenDaysAgo) {
-            totals.calories += meal.calories || 0;
-            totals.protein += meal.protein || 0;
-            totals.carbs += meal.carbs || 0;
-            totals.fats += meal.fats || 0;
-            count++;
-          }
-        });
-
-        const averages = {
-          calories: count ? totals.calories / count : 0,
-          protein: count ? totals.protein / count : 0,
-          carbs: count ? totals.carbs / count : 0,
-          fats: count ? totals.fats / count : 0,
-        };
-
-        let deficiencies = [];
-        if (averages.calories < GUIDELINES.calories.min) deficiencies.push("calories");
-        if (averages.protein < GUIDELINES.protein.min) deficiencies.push("protein");
-        if (averages.carbs < GUIDELINES.carbs.min) deficiencies.push("carbs");
-        if (averages.fats < GUIDELINES.fats.min) deficiencies.push("fats");
-
-        setUnderConsumed(deficiencies);
-
-        // Score foods
-        const scoredFoods = foodDatabase.map((food) => {
-          let score = 0;
-          deficiencies.forEach((nutrient) => {
-            if (food.helps.includes(nutrient)) {
-              score += 1;
-              score += food.nutrients[nutrient] || 0;
-            }
-          });
-
-          if (consumed[food.id]) {
-            score += consumed[food.id] * 2;
-          }
-
-          return { ...food, score };
-        });
-
-        const suggestedFoods = scoredFoods
-          .filter((f) => f.score > 0)
-          .sort((a, b) => b.score - a.score);
-
-        setRecommendations(suggestedFoods);
-      } catch (e) {
-        console.error("Error loading recommendations:", e);
-        Alert.alert("Error", "Could not fetch recommendations.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRecommendations();
+    buildRecommendations();
   }, []);
 
-  const handleAcceptRecommendation = async (food) => {
+  /* ------------------ CORE ML-STYLE ENGINE ------------------ */
+  const buildRecommendations = async () => {
     try {
-      const updated = { ...consumedRecs, [food.id]: (consumedRecs[food.id] || 0) + 1 };
-      setConsumedRecs(updated);
-      await AsyncStorage.setItem("consumedRecommendations", JSON.stringify(updated));
+      const mealsRaw = await AsyncStorage.getItem("selectedFoods");
+      const historyRaw = await AsyncStorage.getItem("consumedRecommendations");
 
-      const savedFoods = await AsyncStorage.getItem("selectedFoods");
-      const meals = savedFoods ? JSON.parse(savedFoods) : [];
+      const meals = mealsRaw ? JSON.parse(mealsRaw) : [];
+      const pastChoices = historyRaw ? JSON.parse(historyRaw) : {};
+      setHistory(pastChoices);
 
-      const newMeal = {
+      /* ---- 1️⃣ Time-weighted nutrition intake (last 7 days) ---- */
+      const now = Date.now();
+      let totals = { calories: 0, protein: 0, carbs: 0, fats: 0 };
+      let weightSum = 0;
+
+      meals.forEach((m) => {
+        if (!m.timestamp) return;
+        const daysAgo = (now - new Date(m.timestamp).getTime()) / 86400000;
+        if (daysAgo > 7) return;
+
+        const weight = clamp(1 - daysAgo / 7);
+        weightSum += weight;
+
+        totals.calories += (m.calories || 0) * weight;
+        totals.protein += (m.protein || 0) * weight;
+        totals.carbs += (m.carbs || 0) * weight;
+        totals.fats += (m.fats || 0) * weight;
+      });
+
+      if (weightSum > 0) {
+        Object.keys(totals).forEach(
+          (k) => (totals[k] = totals[k] / weightSum)
+        );
+      }
+
+      /* ---- 2️⃣ Nutrition deficits vector ---- */
+      const deficitVector = {
+        calories: clamp(
+          (GUIDELINES.calories.min - totals.calories) /
+            GUIDELINES.calories.min
+        ),
+        protein: clamp(
+          (GUIDELINES.protein.min - totals.protein) /
+            GUIDELINES.protein.min
+        ),
+        carbs: clamp(
+          (GUIDELINES.carbs.min - totals.carbs) /
+            GUIDELINES.carbs.min
+        ),
+        fats: clamp(
+          (GUIDELINES.fats.min - totals.fats) / GUIDELINES.fats.min
+        ),
+      };
+
+      setDeficits(deficitVector);
+
+      /* ---- 3️⃣ Score foods (feature dot-product) ---- */
+      const scored = foodDatabase.map((food) => {
+        const nutrients = food.nutrients;
+
+        // Feature vector
+        const nutritionScore =
+          nutrients.calories * deficitVector.calories * 0.3 +
+          nutrients.protein * deficitVector.protein * 0.4 +
+          nutrients.carbs * deficitVector.carbs * 0.2 +
+          nutrients.fats * deficitVector.fats * 0.1;
+
+        // Reinforcement learning (user preference)
+        const preferenceBoost = (pastChoices[food.id] || 0) * 0.6;
+
+        // Diversity penalty
+        const diversityPenalty = Math.min(pastChoices[food.id] || 0, 3) * 0.5;
+
+        const finalScore =
+          nutritionScore + preferenceBoost - diversityPenalty;
+
+        return {
+          ...food,
+          score: Number(finalScore.toFixed(2)),
+          reason: explain(food, deficitVector),
+        };
+      });
+
+      /* ---- 4️⃣ Sort + filter ---- */
+      const result = scored
+        .filter((f) => f.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 20);
+
+      setRecommendations(result);
+    } catch (err) {
+      console.error(err);
+      Alert.alert("Error", "Failed to generate recommendations");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* ------------------ Explanation Engine ------------------ */
+  const explain = (food, deficits) => {
+    const reasons = [];
+    if (deficits.protein > 0.2 && food.nutrients.protein > 5)
+      reasons.push("High protein");
+    if (deficits.carbs > 0.2 && food.nutrients.carbs > 20)
+      reasons.push("Good energy source");
+    if (deficits.fats > 0.2 && food.nutrients.fats > 8)
+      reasons.push("Healthy fats");
+    if (deficits.calories > 0.2 && food.nutrients.calories > 150)
+      reasons.push("Boosts calories");
+
+    return reasons.length ? reasons.join(", ") : "Balanced nutrition";
+  };
+
+  /* ------------------ Accept Recommendation ------------------ */
+  const acceptFood = async (food) => {
+    try {
+      const updatedHistory = {
+        ...history,
+        [food.id]: (history[food.id] || 0) + 1,
+      };
+      setHistory(updatedHistory);
+      await AsyncStorage.setItem(
+        "consumedRecommendations",
+        JSON.stringify(updatedHistory)
+      );
+
+      const mealsRaw = await AsyncStorage.getItem("selectedFoods");
+      const meals = mealsRaw ? JSON.parse(mealsRaw) : [];
+
+      meals.push({
         id: Date.now().toString(),
         name: food.name,
         calories: food.nutrients.calories,
@@ -126,46 +171,19 @@ export default function RecommendationModule() {
         carbs: food.nutrients.carbs,
         fats: food.nutrients.fats,
         timestamp: new Date().toISOString(),
-      };
+      });
 
-      const updatedMeals = [...meals, newMeal];
-      await AsyncStorage.setItem("selectedFoods", JSON.stringify(updatedMeals));
-
-      Alert.alert("✅ Added", `${food.name} logged into your meals!`);
-    } catch (e) {
-      console.error("Error saving recommendation:", e);
-      Alert.alert("Error", "Could not save this food.");
+      await AsyncStorage.setItem("selectedFoods", JSON.stringify(meals));
+      Alert.alert("Added", `${food.name} added to meal log`);
+    } catch {
+      Alert.alert("Error", "Failed to save food");
     }
   };
 
-  const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <View style={styles.cardHeader}>
-        <Icon name="food-apple" size={22} color="#4CAF50" />
-        <Text style={styles.foodName}>{item.name}</Text>
-      </View>
-      <Text style={styles.cardNutrients}>
-        Protein: {item.nutrients.protein}g | Carbs: {item.nutrients.carbs}g | Fats: {item.nutrients.fats}g | {item.nutrients.calories} kcal
-      </Text>
-      {consumedRecs[item.id] && (
-        <Text style={styles.history}>⭐ Picked {consumedRecs[item.id]} times</Text>
-      )}
-
-      {/* Buttons */}
-      <View style={styles.buttonRow}>
-        <TouchableOpacity style={styles.viewButton} onPress={() => Alert.alert("Details", `${item.name}\n\nThis food helps with: ${item.helps.join(", ")}`)}>
-          <Text style={styles.viewButtonText}>View Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.addButton} onPress={() => handleAcceptRecommendation(item)}>
-          <Text style={styles.addButtonText}>Add to Log</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-
+  /* ------------------ UI ------------------ */
   if (loading) {
     return (
-      <View style={styles.centered}>
+      <View style={styles.center}>
         <ActivityIndicator size="large" color="#4CAF50" />
       </View>
     );
@@ -173,48 +191,72 @@ export default function RecommendationModule() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.title}>💡 Recommendations</Text>
+      <Text style={styles.title}>🤖 Smart Food Recommendations</Text>
+
       <Text style={styles.subtitle}>
-        Based on your last 7 days, you may need more:{" "}
-        {underConsumed.length > 0 ? underConsumed.join(", ") : "You're on track!"}
+        Optimized using your nutrition gaps & eating behavior
       </Text>
 
       <FlatList
         data={recommendations}
         keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        contentContainerStyle={styles.list}
-        ListEmptyComponent={<Text style={styles.noData}>No recommendations right now.</Text>}
+        renderItem={({ item }) => (
+          <View style={styles.card}>
+            <Text style={styles.food}>{item.name}</Text>
+            <Text style={styles.nutrients}>
+              {item.nutrients.calories} kcal • P {item.nutrients.protein}g • C{" "}
+              {item.nutrients.carbs}g • F {item.nutrients.fats}g
+            </Text>
+            <Text style={styles.reason}>Why: {item.reason}</Text>
+
+            <View style={styles.row}>
+              <Text style={styles.score}>Score: {item.score}</Text>
+              <TouchableOpacity
+                style={styles.add}
+                onPress={() => acceptFood(item)}
+              >
+                <Text style={styles.addText}>Add</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
+        ListEmptyComponent={
+          <Text style={styles.empty}>You're nutritionally balanced 👍</Text>
+        }
       />
     </SafeAreaView>
   );
 }
 
+/* ------------------ Styles ------------------ */
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#F0F2F5", padding: 20 },
-  centered: { flex: 1, justifyContent: "center", alignItems: "center" },
-  title: { fontSize: 24, fontWeight: "bold", color: "#333", marginBottom: 10 },
-  subtitle: { fontSize: 16, color: "#666", marginBottom: 15 },
-  list: { paddingBottom: 20 },
+  container: { flex: 1, padding: 20, backgroundColor: "#F4F6F8" },
+  center: { flex: 1, justifyContent: "center", alignItems: "center" },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 6 },
+  subtitle: { color: "#666", marginBottom: 16 },
   card: {
     backgroundColor: "#fff",
-    borderRadius: 10,
-    padding: 15,
-    marginBottom: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    padding: 14,
+    borderRadius: 12,
+    marginBottom: 12,
     elevation: 2,
   },
-  cardHeader: { flexDirection: "row", alignItems: "center", marginBottom: 8 },
-  foodName: { fontSize: 18, fontWeight: "600", marginLeft: 8, color: "#333" },
-  cardNutrients: { fontSize: 14, color: "#555" },
-  history: { marginTop: 5, fontSize: 12, color: "#4CAF50", fontWeight: "600" },
-  noData: { textAlign: "center", marginTop: 30, color: "#777" },
-
-  buttonRow: { flexDirection: "row", justifyContent: "space-between", marginTop: 10 },
-  viewButton: { padding: 10, backgroundColor: "#ddd", borderRadius: 5, flex: 1, marginRight: 8, alignItems: "center" },
-  viewButtonText: { color: "#333", fontWeight: "600" },
-  addButton: { padding: 10, backgroundColor: "#4CAF50", borderRadius: 5, flex: 1, alignItems: "center" },
-  addButtonText: { color: "#fff", fontWeight: "600" },
+  food: { fontSize: 18, fontWeight: "600" },
+  nutrients: { color: "#555", marginTop: 4 },
+  reason: { marginTop: 6, color: "#4CAF50", fontWeight: "600" },
+  row: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 10,
+    alignItems: "center",
+  },
+  score: { color: "#333" },
+  add: {
+    backgroundColor: "#4CAF50",
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    borderRadius: 8,
+  },
+  addText: { color: "#fff", fontWeight: "600" },
+  empty: { textAlign: "center", marginTop: 40, color: "#777" },
 });

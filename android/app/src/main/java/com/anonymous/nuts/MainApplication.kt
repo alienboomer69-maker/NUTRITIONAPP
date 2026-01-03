@@ -1,4 +1,4 @@
-package com.nuts
+package com.anonymous.nuts
 
 import android.app.Application
 import com.facebook.react.PackageList

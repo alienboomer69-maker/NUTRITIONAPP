@@ -1,18 +1,24 @@
 {
   "project_info": {
     "project_number": "217520693624",
+    "firebase_url": "https://nuts-28ea8-default-rtdb.firebaseio.com",
     "project_id": "nuts-28ea8",
     "storage_bucket": "nuts-28ea8.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:217520693624:android:c859deaf32fb1502ece88d",
+        "mobilesdk_app_id": "1:217520693624:android:3ace76026dde8a52ece88d",
         "android_client_info": {
-          "package_name": "com.nuts"
+          "package_name": "com.anonymous.nuts"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "217520693624-s14nk9a0hb5m9c9kjr7m9818rmfaj91g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC6HsF3Py9zDLsMF08cpu-hy5FFfli7EvE"
@@ -20,7 +26,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "217520693624-s14nk9a0hb5m9c9kjr7m9818rmfaj91g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

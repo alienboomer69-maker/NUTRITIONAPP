@@ -1,72 +1,105 @@
-import PushNotification from "react-native-push-notification";
+import notifee, {
+  AndroidImportance,
+  TriggerType,
+  EventType,
+} from "@notifee/react-native";
 
-// ✅ Create notification channel at startup
-PushNotification.createChannel(
-  {
-    channelId: "default-channel-id", 
-    channelName: "Default Channel", 
-    channelDescription: "General notifications",
-    soundName: "default",
-    importance: 4,
-    vibrate: true,
-  },
-  (created) => console.log(`Notification channel created: ${created}`)
-);
-
-// 🔹 Clear all notifications
-export const clearAllNotifications = () => {
-  PushNotification.cancelAllLocalNotifications();
-};
-
-// 🔹 Schedule daily notification
-export const scheduleDailyNotification = (id, message, hour, minute) => {
-  PushNotification.localNotificationSchedule({
-    channelId: "default-channel-id",
-    id: id.toString(),
-    title: "Reminder",
-    message: message,
-    date: getNextTriggerDate(hour, minute),
-    repeatType: "day",
-    allowWhileIdle: true,
+// 🔹 Create / ensure notification channel
+export async function ensureChannel() {
+  const channelId = await notifee.createChannel({
+    id: "default",
+    name: "General Notifications",
+    importance: AndroidImportance.HIGH,
   });
-};
-
-// 🔹 Schedule interval notification
-export const scheduleIntervalNotification = (id, message, minutes) => {
-  PushNotification.localNotificationSchedule({
-    channelId: "default-channel-id",
-    id: id.toString(),
-    title: "Reminder",
-    message: message,
-    date: new Date(Date.now() + minutes * 60 * 1000),
-    repeatType: "time",
-    repeatTime: minutes * 60 * 1000,
-    allowWhileIdle: true,
-  });
-};
-
-// 🔹 Helper function
-function getNextTriggerDate(hour, minute) {
-  const now = new Date();
-  const trigger = new Date();
-  trigger.setHours(hour);
-  trigger.setMinutes(minute);
-  trigger.setSeconds(0);
-  if (trigger <= now) {
-    trigger.setDate(trigger.getDate() + 1);
-  }
-  return trigger;
+  return channelId;
 }
 
-// 🔹 Instant test notification
-export const sendTestNotification = () => {
-  PushNotification.localNotification({
-    channelId: "default-channel-id",
-    title: "🔔 Test Notification",
-    message: "If you see this, notifications are working!",
-    playSound: true,
-    soundName: "default",
-    importance: 4,
-    vibrate: true,
+// 🔹 Clear all notifications
+export async function clearAllNotifications() {
+  await notifee.cancelAllNotifications();
+}
+
+// 🔹 Daily notification (fixed)
+export async function scheduleDailyNotification(
+  id,
+  title,
+  body,
+  hour,
+  minute,
+  screen
+) {
+  if (!title || !body) return;
+
+  const channelId = await ensureChannel();
+
+  const now = new Date();
+  const triggerDate = new Date();
+  triggerDate.setHours(hour, minute, 0, 0);
+
+  if (triggerDate <= now) {
+    triggerDate.setDate(triggerDate.getDate() + 1);
+  }
+
+  await notifee.createTriggerNotification(
+    {
+      id: `daily-${String(id)}`, // ✅ STRING
+      title: String(title),
+      body: String(body),
+      android: {
+        channelId,
+        pressAction: { id: "default" },
+      },
+      data: screen ? { screen: String(screen) } : {},
+    },
+    {
+      type: TriggerType.TIMESTAMP,
+      timestamp: triggerDate.getTime(),
+      repeatFrequency: TriggerType.DAILY,
+    }
+  );
+}
+
+// 🔹 Interval notification (Android-safe)
+export async function scheduleIntervalNotification(
+  id,
+  title,
+  body,
+  minutes,
+  screen
+) {
+  if (!title || !body) return;
+  if (minutes < 15) return; // ❗ Android rule
+
+  const channelId = await ensureChannel();
+
+  await notifee.createTriggerNotification(
+    {
+      id: `interval-${String(id)}`,
+      title: String(title),
+      body: String(body),
+      android: {
+        channelId,
+        pressAction: { id: "default" },
+      },
+      data: screen ? { screen: String(screen) } : {},
+    },
+    {
+      type: TriggerType.INTERVAL,
+      interval: minutes * 60 * 1000,
+    }
+  );
+}
+
+// 🔹 Test notification (instant)
+export async function sendTestNotification() {
+  const channelId = await ensureChannel();
+
+  await notifee.displayNotification({
+    title: "✅ Test Notification",
+    body: "Notifications are working correctly!",
+    android: {
+      channelId,
+      pressAction: { id: "default" },
+    },
   });
-};
+}

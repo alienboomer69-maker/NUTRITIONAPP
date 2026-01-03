@@ -1,4 +1,4 @@
-package com.nuts
+package com.anonymous.nuts
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

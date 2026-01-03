@@ -10,10 +10,14 @@ import {
   TouchableOpacity,
   Share,
   RefreshControl,
+  Dimensions,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { BarChart } from "react-native-chart-kit";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+
+// Get screen width dynamically
+const SCREEN_WIDTH = Dimensions.get("window").width - 40;
 
 // WHO & CDC Guidelines
 const GUIDELINES = {
@@ -23,15 +27,19 @@ const GUIDELINES = {
   fats: { min: 44, max: 78 },
 };
 
+// Chart config
 const chartConfig = {
   backgroundGradientFrom: "#fff",
   backgroundGradientTo: "#fff",
+  decimalPlaces: 0,
   color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(51, 51, 51, ${opacity})`,
-  strokeWidth: 2,
+  style: { borderRadius: 16 },
+  propsForLabels: { fontSize: 10 },
+  propsForBackgroundLines: { strokeDasharray: "" },
 };
 
-// 🔹 Mini Tip Component
+// Mini Tip Component
 const Tip = ({ text, color, icon }) => (
   <Text style={{ marginBottom: 8, color }}>
     {icon} {text}
@@ -53,6 +61,7 @@ export default function AnalyticsModule() {
     fats: 0,
   });
 
+  // Fetch analytics data
   const fetchAnalyticsData = async () => {
     try {
       const savedFoods = await AsyncStorage.getItem("selectedFoods");
@@ -92,7 +101,7 @@ export default function AnalyticsModule() {
 
       setTotals(sumTotals);
 
-      // Weekly
+      // Build weekly data
       const weeklyLabels = [];
       const weeklyCalories = [];
       for (let i = 6; i >= 0; i--) {
@@ -103,7 +112,7 @@ export default function AnalyticsModule() {
         weeklyCalories.push(dailyTotals[formattedDate]?.calories || 0);
       }
 
-      // Monthly
+      // Build monthly data
       const monthlyLabels = [];
       const monthlyCalories = [];
       for (let i = 29; i >= 0; i--) {
@@ -136,7 +145,7 @@ export default function AnalyticsModule() {
     fetchAnalyticsData();
   }, []);
 
-  // ✅ Tips logic
+  // Tips based on totals
   const getTips = () => {
     const tips = [];
     const { calories, protein, carbs, fats } = totals;
@@ -172,6 +181,7 @@ export default function AnalyticsModule() {
     return tips;
   };
 
+  // Share analytics
   const onShare = async () => {
     try {
       const weeklyCalories = reportData.weekly.datasets[0].data.reduce((a, b) => a + b, 0);
@@ -231,24 +241,46 @@ export default function AnalyticsModule() {
           ))}
         </View>
 
-        {/* Chart */}
+        {/* Chart Section */}
         <View style={styles.chartContainer}>
           <Text style={styles.chartTitle}>
             {selectedPeriod === "weekly" ? "Weekly" : "Monthly"} Calorie Intake
           </Text>
+
           {chartData.datasets[0].data.length > 0 ? (
-            <BarChart
-              data={chartData}
-              width={350}
-              height={220}
-              yAxisSuffix=" kcal"
-              chartConfig={chartConfig}
-              verticalLabelRotation={30}
-            />
+            selectedPeriod === "weekly" ? (
+              // Scrollable Weekly Chart
+              <ScrollView
+                horizontal
+                showsHorizontalScrollIndicator={true}
+                contentContainerStyle={{ paddingHorizontal: 10 }}
+              >
+                <BarChart
+                  data={chartData}
+                  width={chartData.labels.length * 70} // each bar gets 70px
+                  height={240}
+                  fromZero
+                  yAxisSuffix=" kcal"
+                  showValuesOnTopOfBars
+                  chartConfig={chartConfig}
+                  verticalLabelRotation={0}
+                />
+              </ScrollView>
+            ) : (
+              // Static Monthly Chart
+              <BarChart
+                data={chartData}
+                width={SCREEN_WIDTH}
+                height={240}
+                fromZero
+                yAxisSuffix=" kcal"
+                showValuesOnTopOfBars
+                chartConfig={chartConfig}
+                verticalLabelRotation={45}
+              />
+            )
           ) : (
-            <Text style={styles.noDataText}>
-              No data yet. Log meals to see analytics 📖
-            </Text>
+            <Text style={styles.noDataText}>No data yet. Log meals to see analytics 📖</Text>
           )}
         </View>
 
@@ -260,7 +292,7 @@ export default function AnalyticsModule() {
           ))}
         </View>
 
-        {/* Export */}
+        {/* Export Button */}
         <TouchableOpacity style={styles.exportButton} onPress={onShare}>
           <Icon name="share-variant" size={20} color="#fff" />
           <Text style={styles.exportButtonText}>Export Report</Text>
@@ -301,7 +333,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 10,
     marginBottom: 20,
-    alignItems: "center",
+    alignItems: "flex-start",
     elevation: 3,
   },
   chartTitle: { fontSize: 18, fontWeight: "bold", marginBottom: 10 },
